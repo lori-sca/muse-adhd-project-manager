@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADHD Project Manager — Demo Board</title>
+<style>
+  /* THEME: tweak these to make it yours */
+  :root {
+    --bg: #f6f5f2;
+    --card: #ffffff;
+    --ink: #1c1a17;
+    --muted: #8a857c;
+    --accent: #4f46e5;
+    --urgent: #dc2626;
+    --high: #ea580c;
+    --normal: #4f46e5;
+    --low: #6b7280;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--ink);
+    max-width: 860px; margin: 0 auto; padding: 28px 18px 60px;
+    line-height: 1.45;
+  }
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+  h1 { font-size: 24px; letter-spacing: -0.02em; }
+  .tagline { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+  .badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    background: #fef3c7; color: #92400e; border: 1px solid #fcd34a;
+    padding: 5px 10px; border-radius: 999px; white-space: nowrap;
+  }
+  .count { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+  .hero {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff; border-radius: var(--radius);
+    padding: 22px; margin-bottom: 26px;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+  }
+  .hero .kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; opacity: 0.85; margin-bottom: 8px; }
+  .hero h2 { font-size: 21px; margin-bottom: 8px; }
+  .hero p { font-size: 14px; opacity: 0.92; }
+  .hero .meta { margin-top: 12px; font-size: 12px; opacity: 0.85; }
+  h3.section { font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 26px 0 12px; }
+  .card {
+    background: var(--card); border-radius: var(--radius);
+    padding: 16px 18px; margin-bottom: 12px;
+    border: 1px solid #eceae5;
+    border-left: 4px solid var(--normal);
+  }
+  .card.urgent { border-left-color: var(--urgent); }
+  .card.high { border-left-color: var(--high); }
+  .card.low { border-left-color: var(--low); opacity: 0.92; }
+  .card h4 { font-size: 16px; margin-bottom: 6px; }
+  .card .note { font-size: 13px; color: #55514a; margin-bottom: 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .chip {
+    font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+    background: #f1efeB; color: #6b655c;
+  }
+  .chip.src { background: #eef2ff; color: var(--accent); }
+  .chip.snoozed { background: #fef3c7; color: #92400e; }
+  .chip.waiting { background: #e0f2fe; color: #0369a1; }
+  .actions { display: flex; gap: 8px; }
+  button {
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: 1px solid #e2dfd8; background: #fff; color: var(--ink);
+    padding: 7px 14px; border-radius: 999px;
+  }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.primary:hover { background: #4338ca; color: #fff; }
+  .empty { color: var(--muted); font-size: 14px; padding: 12px 0; }
+  footer {
+    margin-top: 40px; padding-top: 18px; border-top: 1px solid #e7e4dd;
+    font-size: 12px; color: var(--muted);
+  }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>ADHD Project Manager</h1>
+  <span class="badge">SAMPLE DATA</span>
+</header>
+<p class="tagline">Nothing left unfinished. A scheduled scan catches what you left midway — this board is where it lands.</p>
+<div class="count" id="count"></div>
+
+<section class="hero" id="hero" style="display:none">
+  <div class="kicker">RIGHT NOW</div>
+  <h2 id="hero-title"></h2>
+  <p id="hero-note"></p>
+  <div class="meta" id="hero-meta"></div>
+</section>
+
+<div id="board"></div>
+
+<footer>
+  Static demo of the <strong>ADHD Project Manager</strong> — built for the Muse environment.
+  In the live setup, a scheduled scan refreshes this data and the buttons write back
+  (mark shipped / snooze with a comeback date). Here they only rearrange the demo.
+  Make it yours: replace the items below with your own scan output matching
+  <a href="../data/schema.md"><code>data/schema.md</code></a>.
+</footer>
+
+<script>
+/*
+ * SAMPLE DATA — clearly fictional. Replace this array with your own items,
+ * or serve this folder over HTTP (e.g. GitHub Pages) and the board will
+ * load ../data/sample-items.json instead.
+ */
+const SAMPLE_ITEMS = [
+  { "id": "sample-01", "title": "Book dentist appointment", "priority": "urgent", "status": "open",
+    "source_chat": "Sample: Personal", "source_fingerprint": "sample",
+    "note": "Toothache since Tuesday. Call before Friday or it becomes a root canal saga.",
+    "due": "2026-10-02" },
+  { "id": "sample-02", "title": "Cancel free trial before it renews", "priority": "urgent", "status": "open",
+    "source_chat": "Sample: Money", "source_fingerprint": "sample",
+    "note": "$29/mo starts charging Monday. Cancel in settings, confirm by email.",
+    "due": "2026-09-29" },
+  { "id": "sample-03", "title": "Send Q3 expense report", "priority": "high", "status": "open",
+    "source_chat": "Sample: Work", "source_fingerprint": "sample",
+    "note": "Receipts are in the inbox folder. Finance deadline is Friday 5pm." },
+  { "id": "sample-04", "title": "Reply to landlord about lease renewal", "priority": "high", "status": "waiting",
+    "source_chat": "Sample: Personal", "source_fingerprint": "sample",
+    "note": "Waiting on their answer about the parking spot. Nudge if no reply by Thursday." },
+  { "id": "sample-05", "title": "Finish portfolio case study draft", "priority": "normal", "status": "open",
+    "source_chat": "Sample: Career", "source_fingerprint": "sample",
+    "note": "Results section is still blank. 45 focused minutes and it's done." },
+  { "id": "sample-06", "title": "Plan weekend trip with Sam", "priority": "normal", "status": "snoozed",
+    "source_chat": "Sample: Personal", "source_fingerprint": "sample",
+    "note": "Snoozed until next week — Sam is traveling.",
+    "snooze_until": "2026-10-05" },
+  { "id": "sample-07", "title": "Research standing desks", "priority": "low", "status": "open",
+    "source_chat": "Sample: Backlog", "source_fingerprint": "sample",
+    "note": "Nice-to-have. Back is fine for now; revisit when budget allows." },
+  { "id": "sample-08", "title": "Water the plants", "priority": "low", "status": "open",
+    "source_chat": "Sample: Backlog", "source_fingerprint": "sample",
+    "note": "The fern is judging you." }
+];
+
+const PRIORITY_ORDER = { urgent: 0, high: 1, normal: 2, low: 3 };
+const PRIORITY_LABEL = { urgent: "Urgent", high: "High", normal: "Normal", low: "Low" };
+let items = [];
+
+async function loadItems() {
+  try {
+    const res = await fetch("../data/sample-items.json");
+    if (res.ok) {
+      const j = await res.json();
+      if (Array.isArray(j) && j.length) return j;
+    }
+  } catch (e) { /* file:// or missing — fall back to embedded */ }
+  return SAMPLE_ITEMS.map(i => ({ ...i }));
+}
+
+function openItems() {
+  return items.filter(i => i.status !== "shipped")
+    .sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
+}
+
+function chip(text, cls) { return `<span class="chip${cls ? " " + cls : ""}">${text}</span>`; }
+
+function render() {
+  const open = openItems();
+  document.getElementById("count").textContent =
+    `${open.length} open item${open.length === 1 ? "" : "s"} · sample data`;
+
+  const hero = document.getElementById("hero");
+  const top = open.find(i => i.priority === "urgent" && i.status === "open") || open[0];
+  if (top) {
+    hero.style.display = "block";
+    document.getElementById("hero-title").textContent = top.title;
+    document.getElementById("hero-note").textContent = top.note || "";
+    document.getElementById("hero-meta").textContent =
+      `${top.source_chat}${top.due ? " · due " + top.due : ""}`;
+  } else {
+    hero.style.display = "none";
+  }
+
+  const board = document.getElementById("board");
+  board.innerHTML = "";
+  ["urgent", "high", "normal", "low"].forEach(p => {
+    const group = open.filter(i => i.priority === p);
+    if (!group.length) return;
+    const h = document.createElement("h3");
+    h.className = "section";
+    h.textContent = PRIORITY_LABEL[p] + (p === "low" ? " · backlog" : "");
+    board.appendChild(h);
+    group.forEach(item => {
+      const el = document.createElement("div");
+      el.className = "card " + p;
+      let chips = chip(PRIORITY_LABEL[p]) + chip(item.source_chat, "src");
+      if (item.status === "snoozed") chips += chip("snoozed" + (item.snooze_until ? " → " + item.snooze_until : ""), "snoozed");
+      if (item.status === "waiting") chips += chip("waiting", "waiting");
+      if (item.due) chips += chip("due " + item.due);
+      el.innerHTML = `<h4></h4><div class="note"></div><div class="chips">${chips}</div>
+        <div class="actions">
+          <button class="primary" data-act="ship">Mark shipped</button>
+          <button data-act="snooze">Snooze</button>
+        </div>`;
+      el.querySelector("h4").textContent = item.title;
+      el.querySelector(".note").textContent = item.note || "";
+      el.querySelector('[data-act="ship"]').onclick = () => { item.status = "shipped"; render(); };
+      el.querySelector('[data-act="snooze"]').onclick = () => {
+        const d = new Date(Date.now() + 864e5);
+        item.status = "snoozed";
+        item.snooze_until = d.toISOString().slice(0, 10);
+        render();
+      };
+      board.appendChild(el);
+    });
+  });
+  if (!open.length) board.innerHTML = `<p class="empty">All clear. Nothing left unfinished. 🎉</p>`;
+}
+
+loadItems().then(j => { items = j; render(); });
+</script>
+</body>
+</html>
