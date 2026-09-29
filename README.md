@@ -24,9 +24,9 @@ Three steps, on a loop:
 
 ## Try the demo
 
-Open `board/index.html` in a browser — it runs on fictional sample data, no setup needed.
+Live demo (fictional sample data, no setup needed): https://lori-sca.github.io/muse-adhd-project-manager/board/index.html
 
-Or enable **GitHub Pages** on this repo (Settings → Pages → Deploy from branch) for a live demo link.
+Or open `board/index.html` locally in a browser — same sample data.
 
 ## Run the scan yourself
 
@@ -68,11 +68,14 @@ You lose the automatic scheduled scans (that's the Muse-native part), but the bo
 
 ## Project status
 
-- [x] Muse-native system (private, in daily use)
-- [x] Static board + sample data + prompts (this repo)
-- [ ] One-click import of chat exports
-- [ ] "Snooze until" natural-language parsing in the demo board
+Done:
+- Muse-native system (private, in daily use)
+- Static board + sample data + prompts (this repo)
+- Live demo via GitHub Pages
 
+Roadmap:
+- One-click import of chat exports
+- "Snooze until" natural-language parsing in the demo board
 ## License
 
 MIT — see [LICENSE](LICENSE). Use it, fork it, make it yours.
