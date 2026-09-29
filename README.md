@@ -4,6 +4,9 @@
 
  **Built for Muse.** A scheduled scan reads your Muse threads, catches everything you left midway, and puts it on one prioritized board that nudges you until it's actually shipped.
 
+
+![Problem diagram: the trap, the insight, the machine](docs/problem-diagram.svg)
+
 ![Board](docs/screenshots/board.png)
 
 ## The story
