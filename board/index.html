@@ -25,14 +25,17 @@
     max-width: 860px; margin: 0 auto; padding: 28px 18px 60px;
     line-height: 1.45;
   }
-  header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+  .title-row { display: flex; align-items: center; gap: 12px; }
   h1 { font-size: 24px; letter-spacing: -0.02em; }
-  .tagline { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+  .tagline { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
   .badge {
     font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
     background: #fef3c7; color: #92400e; border: 1px solid #fcd34a;
     padding: 5px 10px; border-radius: 999px; white-space: nowrap;
   }
+  .top-actions { display: flex; gap: 8px; }
+  .scanline { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
   .count { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
   .hero {
     background: linear-gradient(135deg, #4f46e5, #7c3aed);
@@ -43,7 +46,9 @@
   .hero .kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; opacity: 0.85; margin-bottom: 8px; }
   .hero h2 { font-size: 21px; margin-bottom: 8px; }
   .hero p { font-size: 14px; opacity: 0.92; }
-  .hero .meta { margin-top: 12px; font-size: 12px; opacity: 0.85; }
+  .hero .meta { margin-top: 12px; font-size: 12px; opacity: 0.9; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .hero .actions { margin-top: 14px; display: flex; gap: 8px; }
+  .hero .chip { background: rgba(255,255,255,0.18); color: #fff; }
   h3.section { font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 26px 0 12px; }
   .card {
     background: var(--card); border-radius: var(--radius);
@@ -64,7 +69,7 @@
   .chip.src { background: #eef2ff; color: var(--accent); }
   .chip.snoozed { background: #fef3c7; color: #92400e; }
   .chip.waiting { background: #e0f2fe; color: #0369a1; }
-  .actions { display: flex; gap: 8px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
   button {
     font-size: 13px; font-weight: 600; cursor: pointer;
     border: 1px solid #e2dfd8; background: #fff; color: var(--ink);
@@ -73,7 +78,61 @@
   button:hover { border-color: var(--accent); color: var(--accent); }
   button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
   button.primary:hover { background: #4338ca; color: #fff; }
+  button.ghost-light { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: #fff; }
+  button.ghost-light:hover { background: rgba(255,255,255,0.28); color: #fff; border-color: #fff; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
   .empty { color: var(--muted); font-size: 14px; padding: 12px 0; }
+
+  /* Shipped log */
+  .shipped { opacity: 0.85; }
+  .shipped .done-note { font-size: 13px; color: #3f6212; margin-top: 6px; }
+
+  /* Modal */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(28, 26, 23, 0.45);
+    display: none; align-items: flex-start; justify-content: center;
+    padding: 40px 16px; z-index: 50; overflow-y: auto;
+  }
+  .overlay.open { display: flex; }
+  .dialog {
+    background: var(--card); border-radius: 18px; max-width: 560px; width: 100%;
+    padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  }
+  .dialog h2 { font-size: 20px; margin-bottom: 4px; padding-right: 28px; }
+  .dialog .sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .dialog .close-x {
+    float: right; border: none; background: none; font-size: 20px;
+    color: var(--muted); padding: 0 4px; line-height: 1;
+  }
+  .dialog .close-x:hover { color: var(--ink); }
+  .frow { margin-bottom: 16px; }
+  .frow > label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .frow .body { font-size: 14px; }
+  .seg { display: flex; gap: 6px; flex-wrap: wrap; }
+  .seg button.on-urgent { background: var(--urgent); border-color: var(--urgent); color: #fff; }
+  .seg button.on-high { background: var(--high); border-color: var(--high); color: #fff; }
+  .seg button.on-normal { background: var(--normal); border-color: var(--normal); color: #fff; }
+  .seg button.on-low { background: var(--low); border-color: var(--low); color: #fff; }
+  input[type="text"], input[type="date"], textarea {
+    width: 100%; font-size: 14px; padding: 8px 12px;
+    border: 1px solid #e2dfd8; border-radius: 10px; font-family: inherit;
+  }
+  textarea { min-height: 64px; resize: vertical; }
+  .check-row { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; margin: 12px 0; }
+  .check-row input { margin-top: 3px; }
+  .dialog .actions { margin-top: 18px; justify-content: flex-end; }
+  .creed { font-size: 13px; color: #6b655c; background: #f6f5f2; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; }
+  .creed strong { color: var(--ink); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--ink); color: #fff; font-size: 13px; padding: 10px 18px;
+    border-radius: 999px; opacity: 0; transition: all 0.25s; z-index: 100;
+    max-width: 90vw; text-align: center; pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
   footer {
     margin-top: 40px; padding-top: 18px; border-top: 1px solid #e7e4dd;
     font-size: 12px; color: var(--muted);
@@ -84,10 +143,17 @@
 <body>
 
 <header class="top">
-  <h1>ADHD Project Manager</h1>
-  <span class="badge">SAMPLE DATA</span>
+  <div class="title-row">
+    <h1>ADHD Project Manager</h1>
+    <span class="badge">SAMPLE DATA</span>
+  </div>
+  <div class="top-actions">
+    <button id="scan-btn" title="Demo only: simulates a scan">Scan now</button>
+    <button id="add-btn" class="primary" title="Demo only: adds to this session">+ Add item</button>
+  </div>
 </header>
 <p class="tagline">Nothing left unfinished. A scheduled scan catches what you left midway — this board is where it lands.</p>
+<div class="scanline" id="scanline"></div>
 <div class="count" id="count"></div>
 
 <section class="hero" id="hero" style="display:none">
@@ -95,14 +161,27 @@
   <h2 id="hero-title"></h2>
   <p id="hero-note"></p>
   <div class="meta" id="hero-meta"></div>
+  <div class="actions">
+    <button class="ghost-light" id="hero-focus">Focus</button>
+    <button class="ghost-light" id="hero-ship">Mark shipped</button>
+    <button class="ghost-light" id="hero-snooze">Snooze</button>
+  </div>
 </section>
 
 <div id="board"></div>
 
+<h3 class="section">Shipped — proof it happened</h3>
+<div id="shipped-log"></div>
+
+<div class="overlay" id="overlay"><div class="dialog" id="dialog"></div></div>
+<div class="toast" id="toast"></div>
+
 <footer>
   Static demo of the <strong>ADHD Project Manager</strong> — built for the Muse environment.
-  In the live setup, a scheduled scan refreshes this data and the buttons write back
-  (mark shipped / snooze with a comeback date). Here they only rearrange the demo.
+  This mirrors the real board: focus view with full context, urgency overrides, snooze with
+  comeback dates, and shipping that requires your confirmation (shipped items land in the log
+  below — they don't just vanish). In the live setup, a scheduled scan refreshes this data and
+  the buttons write back. Here everything is fictional sample data and resets on reload.
   Make it yours: replace the items below with your own scan output matching
   <a href="../data/schema.md"><code>data/schema.md</code></a>.
 </footer>
@@ -117,35 +196,52 @@ const SAMPLE_ITEMS = [
   { "id": "sample-01", "title": "Book dentist appointment", "priority": "urgent", "status": "open",
     "source_chat": "Sample: Personal", "source_fingerprint": "sample",
     "note": "Toothache since Tuesday. Call before Friday or it becomes a root canal saga.",
+    "detail": "Toothache started Tuesday on the lower right molar. Called once, got voicemail. Call the clinic directly — online booking shows no slots this week.",
+    "why_urgent": "Pain is getting worse and Friday is the last day to call before the weekend. Waiting risks a root canal.",
     "due": "2026-10-02" },
   { "id": "sample-02", "title": "Cancel free trial before it renews", "priority": "urgent", "status": "open",
     "source_chat": "Sample: Money", "source_fingerprint": "sample",
     "note": "$29/mo starts charging Monday. Cancel in settings, confirm by email.",
+    "detail": "Signed up three weeks ago for a one-off project. Cancel under Settings → Billing; it takes effect immediately. Keep the confirmation email.",
+    "why_urgent": "Renews Monday at $29/mo — cancel today or pay for a month you won't use.",
     "due": "2026-09-29" },
   { "id": "sample-03", "title": "Send Q3 expense report", "priority": "high", "status": "open",
     "source_chat": "Sample: Work", "source_fingerprint": "sample",
-    "note": "Receipts are in the inbox folder. Finance deadline is Friday 5pm." },
+    "note": "Receipts are in the inbox folder. Finance deadline is Friday 5pm.",
+    "detail": "Receipts are in the inbox folder — mostly meals and one flight. Use the usual spreadsheet template; just needs totals and project codes.",
+    "why_urgent": "Finance deadline is Friday 5pm and reimbursements only run twice a month — miss it and the money waits." },
   { "id": "sample-04", "title": "Reply to landlord about lease renewal", "priority": "high", "status": "waiting",
     "source_chat": "Sample: Personal", "source_fingerprint": "sample",
-    "note": "Waiting on their answer about the parking spot. Nudge if no reply by Thursday." },
+    "note": "Waiting on their answer about the parking spot. Nudge if no reply by Thursday.",
+    "detail": "Asked about the parking-spot add-on two weeks ago. Landlord said they'd check with management. Nudge Thursday, then decide on the renewal either way.",
+    "why_urgent": "The renewal window is closing and the parking question blocks the decision." },
   { "id": "sample-05", "title": "Finish portfolio case study draft", "priority": "normal", "status": "open",
     "source_chat": "Sample: Career", "source_fingerprint": "sample",
-    "note": "Results section is still blank. 45 focused minutes and it's done." },
+    "note": "Results section is still blank. 45 focused minutes and it's done.",
+    "detail": "Results section is blank. The numbers are already in the spreadsheet — needs the before/after paragraph and one chart.",
+    "why_urgent": "No hard deadline, but it's the last unfinished draft and it's 45 minutes from done. Momentum matters." },
   { "id": "sample-06", "title": "Plan weekend trip with Sam", "priority": "normal", "status": "snoozed",
     "source_chat": "Sample: Personal", "source_fingerprint": "sample",
     "note": "Snoozed until next week — Sam is traveling.",
+    "detail": "Sam is traveling until the weekend. When this resurfaces: pick two date options and check train prices.",
+    "why_urgent": "",
     "snooze_until": "2026-10-05" },
   { "id": "sample-07", "title": "Research standing desks", "priority": "low", "status": "open",
     "source_chat": "Sample: Backlog", "source_fingerprint": "sample",
-    "note": "Nice-to-have. Back is fine for now; revisit when budget allows." },
+    "note": "Nice-to-have. Back is fine for now; revisit when budget allows.",
+    "detail": "Back is fine for now. When budget allows: cap $400, must fit the 120cm desk.",
+    "why_urgent": "" },
   { "id": "sample-08", "title": "Water the plants", "priority": "low", "status": "open",
     "source_chat": "Sample: Backlog", "source_fingerprint": "sample",
-    "note": "The fern is judging you." }
+    "note": "The fern is judging you.",
+    "detail": "Fern and the pothos. Fern first — its soil is dry.",
+    "why_urgent": "" }
 ];
 
 const PRIORITY_ORDER = { urgent: 0, high: 1, normal: 2, low: 3 };
 const PRIORITY_LABEL = { urgent: "Urgent", high: "High", normal: "Normal", low: "Low" };
 let items = [];
+let lastScan = new Date();
 
 async function loadItems() {
   try {
@@ -160,15 +256,37 @@ async function loadItems() {
 
 function openItems() {
   return items.filter(i => i.status !== "shipped")
-    .sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
+    .sort((a, b) => (PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]) ||
+      String(a.due || "9999").localeCompare(String(b.due || "9999")));
+}
+function shippedItems() {
+  return items.filter(i => i.status === "shipped")
+    .sort((a, b) => String(b.shipped_at || "").localeCompare(String(a.shipped_at || "")));
+}
+function esc(s) {
+  const d = document.createElement("div");
+  d.textContent = s == null ? "" : String(s);
+  return d.innerHTML;
+}
+function chip(text, cls) { return `<span class="chip${cls ? " " + cls : ""}">${esc(text)}</span>`; }
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove("show"), 2600);
 }
 
-function chip(text, cls) { return `<span class="chip${cls ? " " + cls : ""}">${text}</span>`; }
+/* ---------- render ---------- */
 
 function render() {
   const open = openItems();
+  const shipped = shippedItems();
+  document.getElementById("scanline").textContent =
+    `Demo scan · ${lastScan.toLocaleTimeString([], {hour: "numeric", minute: "2-digit"})} · sample data (resets on reload)`;
   document.getElementById("count").textContent =
-    `${open.length} open item${open.length === 1 ? "" : "s"} · sample data`;
+    `${open.length} open item${open.length === 1 ? "" : "s"}${shipped.length ? ` · ${shipped.length} shipped` : ""}`;
 
   const hero = document.getElementById("hero");
   const top = open.find(i => i.priority === "urgent" && i.status === "open") || open[0];
@@ -176,8 +294,11 @@ function render() {
     hero.style.display = "block";
     document.getElementById("hero-title").textContent = top.title;
     document.getElementById("hero-note").textContent = top.note || "";
-    document.getElementById("hero-meta").textContent =
-      `${top.source_chat}${top.due ? " · due " + top.due : ""}`;
+    document.getElementById("hero-meta").innerHTML =
+      chip(top.source_chat, "src") + (top.due ? chip("due " + top.due) : "");
+    document.getElementById("hero-focus").onclick = () => openFocus(top.id);
+    document.getElementById("hero-ship").onclick = () => confirmShip(top.id);
+    document.getElementById("hero-snooze").onclick = () => snoozeDialog(top.id);
   } else {
     hero.style.display = "none";
   }
@@ -200,23 +321,210 @@ function render() {
       if (item.due) chips += chip("due " + item.due);
       el.innerHTML = `<h4></h4><div class="note"></div><div class="chips">${chips}</div>
         <div class="actions">
+          <button data-act="focus">Focus</button>
           <button class="primary" data-act="ship">Mark shipped</button>
           <button data-act="snooze">Snooze</button>
         </div>`;
       el.querySelector("h4").textContent = item.title;
       el.querySelector(".note").textContent = item.note || "";
-      el.querySelector('[data-act="ship"]').onclick = () => { item.status = "shipped"; render(); };
-      el.querySelector('[data-act="snooze"]').onclick = () => {
-        const d = new Date(Date.now() + 864e5);
-        item.status = "snoozed";
-        item.snooze_until = d.toISOString().slice(0, 10);
-        render();
-      };
+      el.querySelector('[data-act="focus"]').onclick = () => openFocus(item.id);
+      el.querySelector('[data-act="ship"]').onclick = () => confirmShip(item.id);
+      el.querySelector('[data-act="snooze"]').onclick = () => snoozeDialog(item.id);
       board.appendChild(el);
     });
   });
   if (!open.length) board.innerHTML = `<p class="empty">All clear. Nothing left unfinished. 🎉</p>`;
+
+  const log = document.getElementById("shipped-log");
+  log.innerHTML = "";
+  if (!shipped.length) {
+    log.innerHTML = `<p class="empty">Nothing shipped yet. When you confirm an item, it lands here — proof, not a vanishing act.</p>`;
+  } else {
+    shipped.forEach(item => {
+      const el = document.createElement("div");
+      el.className = "card shipped";
+      el.innerHTML = `<h4></h4><div class="chips">${chip("shipped" + (item.shipped_at ? " · " + item.shipped_at : ""))}${chip(item.source_chat, "src")}</div>
+        ${item.shipped_note ? `<div class="done-note"></div>` : ""}`;
+      el.querySelector("h4").textContent = "✓ " + item.title;
+      if (item.shipped_note) el.querySelector(".done-note").textContent = "Did: " + item.shipped_note;
+      log.appendChild(el);
+    });
+  }
 }
+
+/* ---------- modal helpers ---------- */
+
+const overlay = document.getElementById("overlay");
+const dialog = document.getElementById("dialog");
+function openDialog(html) {
+  dialog.innerHTML = `<button class="close-x" id="dlg-x" aria-label="Close">×</button>` + html;
+  overlay.classList.add("open");
+  document.getElementById("dlg-x").onclick = closeDialog;
+}
+function closeDialog() { overlay.classList.remove("open"); dialog.innerHTML = ""; }
+overlay.addEventListener("click", e => { if (e.target === overlay) closeDialog(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDialog(); });
+function findItem(id) { return items.find(i => i.id === id); }
+
+/* ---------- focus view ---------- */
+
+function openFocus(id) {
+  const item = findItem(id);
+  if (!item) return;
+  const segBtns = ["urgent", "high", "normal", "low"].map(p =>
+    `<button data-p="${p}" class="${item.priority === p ? "on-" + p : ""}">${PRIORITY_LABEL[p]}</button>`
+  ).join("");
+  openDialog(`
+    <div class="sub">FOCUS · full context, no re-reading the chat</div>
+    <h2>${esc(item.title)}</h2>
+    <div class="chips" style="margin:10px 0 0">${chip(PRIORITY_LABEL[item.priority])}${chip(item.source_chat, "src")}${item.due ? chip("due " + item.due) : ""}${item.status === "snoozed" && item.snooze_until ? chip("snoozed → " + item.snooze_until, "snoozed") : ""}${item.status === "waiting" ? chip("waiting", "waiting") : ""}</div>
+    ${item.why_urgent ? `<div class="frow" style="margin-top:14px"><label>Why this is urgent</label><div class="body">${esc(item.why_urgent)}</div></div>` : ""}
+    <div class="frow"><label>Context</label><div class="body">${esc(item.detail || item.note || "—")}</div></div>
+    <div class="frow"><label>Change urgency</label><div class="seg" id="seg">${segBtns}</div></div>
+    <div class="frow"><label>Deadline</label><input type="date" id="f-due" value="${esc(item.due || "")}"></div>
+    <div class="frow"><label>Snooze until</label><input type="date" id="f-snooze" value="${esc(item.snooze_until || "")}"></div>
+    <div class="actions">
+      <button id="f-save">Save changes</button>
+      <button class="primary" id="f-ship">Mark shipped</button>
+    </div>`);
+  dialog.querySelectorAll("#seg button").forEach(b => {
+    b.onclick = () => {
+      dialog.querySelectorAll("#seg button").forEach(x => x.className = "");
+      b.className = "on-" + b.dataset.p;
+    };
+  });
+  document.getElementById("f-save").onclick = () => {
+    const sel = dialog.querySelector("#seg button[class^='on-'], #seg button[class*=' on-']");
+    if (sel) item.priority = sel.dataset.p;
+    item.due = document.getElementById("f-due").value || undefined;
+    const sn = document.getElementById("f-snooze").value;
+    if (sn) { item.status = "snoozed"; item.snooze_until = sn; }
+    else if (item.status === "snoozed") { item.status = "open"; item.snooze_until = undefined; }
+    closeDialog(); render();
+    toast("Saved. The board re-sorts around your call.");
+  };
+  document.getElementById("f-ship").onclick = () => confirmShip(id);
+}
+
+/* ---------- ship with confirmation ---------- */
+
+function confirmShip(id) {
+  const item = findItem(id);
+  if (!item) return;
+  openDialog(`
+    <div class="sub">CONFIRM</div>
+    <h2>${esc(item.title)}</h2>
+    <div class="creed"><strong>Produced is not shipped.</strong> Shipped means you actually did
+    something with this — not just made output. The scan will never mark this for you.</div>
+    <label class="check-row"><input type="checkbox" id="s-did">
+    <span>I actually did something with this (not just thought about it).</span></label>
+    <div class="frow"><label>What did you do? <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+    <input type="text" id="s-note" placeholder="e.g. called the clinic, booked for Thursday"></div>
+    <div class="actions">
+      <button id="s-cancel">Not yet</button>
+      <button class="primary" id="s-ok">Confirm shipped</button>
+    </div>`);
+  document.getElementById("s-cancel").onclick = closeDialog;
+  document.getElementById("s-ok").onclick = () => {
+    if (!document.getElementById("s-did").checked) {
+      toast("Check the box only when it's really done — that's the whole point.");
+      return;
+    }
+    item.status = "shipped";
+    item.shipped_at = new Date().toISOString().slice(0, 10);
+    item.shipped_note = document.getElementById("s-note").value.trim() || undefined;
+    closeDialog(); render();
+    toast("Shipped. It's in the log below — proof, not a vanishing act.");
+  };
+}
+
+/* ---------- snooze ---------- */
+
+function snoozeDialog(id) {
+  const item = findItem(id);
+  if (!item) return;
+  const tomorrow = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
+  openDialog(`
+    <div class="sub">SNOOZE</div>
+    <h2>${esc(item.title)}</h2>
+    <div class="creed">Snoozing parks it with a <strong>comeback date</strong> — "later" with a return
+    ticket, not "later" into the void. The scan won't surface it before then.</div>
+    <div class="frow"><label>Come back on</label><input type="date" id="z-date" value="${tomorrow}"></div>
+    <div class="actions">
+      <button id="z-cancel">Cancel</button>
+      <button class="primary" id="z-ok">Snooze it</button>
+    </div>`);
+  document.getElementById("z-cancel").onclick = closeDialog;
+  document.getElementById("z-ok").onclick = () => {
+    const d = document.getElementById("z-date").value || tomorrow;
+    item.status = "snoozed";
+    item.snooze_until = d;
+    closeDialog(); render();
+    toast(`Parked until ${d}. It'll resurface on its own.`);
+  };
+}
+
+/* ---------- manual capture ---------- */
+
+document.getElementById("add-btn").onclick = () => {
+  openDialog(`
+    <div class="sub">CAPTURE</div>
+    <h2>Add an item</h2>
+    <div class="creed">Caught it yourself before the scan did. Same rules: <strong>verb-first title</strong>,
+    honest urgency.</div>
+    <div class="frow"><label>Next action</label><input type="text" id="a-title" placeholder="e.g. Text Maya the invoice total"></div>
+    <div class="frow"><label>Context</label><textarea id="a-note" placeholder="What's blocking, what's next"></textarea></div>
+    <div class="frow"><label>Urgency</label><div class="seg" id="a-seg">
+      <button data-p="urgent">Urgent</button><button data-p="high">High</button>
+      <button data-p="normal" class="on-normal">Normal</button><button data-p="low">Low</button>
+    </div></div>
+    <div class="frow"><label>Deadline <span style="text-transform:none;letter-spacing:0">(optional)</span></label><input type="date" id="a-due"></div>
+    <div class="actions">
+      <button id="a-cancel">Cancel</button>
+      <button class="primary" id="a-ok">Add to board</button>
+    </div>`);
+  dialog.querySelectorAll("#a-seg button").forEach(b => {
+    b.onclick = () => {
+      dialog.querySelectorAll("#a-seg button").forEach(x => x.className = "");
+      b.className = "on-" + b.dataset.p;
+    };
+  });
+  document.getElementById("a-cancel").onclick = closeDialog;
+  document.getElementById("a-ok").onclick = () => {
+    const title = document.getElementById("a-title").value.trim();
+    if (!title) { toast("Give it a next-action title first."); return; }
+    const sel = dialog.querySelector("#a-seg button[class*='on-']");
+    items.push({
+      id: "sample-manual-" + Date.now(),
+      title,
+      note: document.getElementById("a-note").value.trim(),
+      detail: document.getElementById("a-note").value.trim(),
+      priority: sel ? sel.dataset.p : "normal",
+      status: "open",
+      source_chat: "Sample: Manual capture",
+      source_fingerprint: "sample",
+      due: document.getElementById("a-due").value || undefined,
+      why_urgent: ""
+    });
+    closeDialog(); render();
+    toast("Captured. The next scan would have found it anyway — now it doesn't have to.");
+  };
+};
+
+/* ---------- simulated scan ---------- */
+
+document.getElementById("scan-btn").onclick = () => {
+  const btn = document.getElementById("scan-btn");
+  btn.disabled = true;
+  btn.textContent = "Scanning…";
+  setTimeout(() => {
+    lastScan = new Date();
+    btn.disabled = false;
+    btn.textContent = "Scan now";
+    render();
+    toast("Demo scan complete — nothing new. In the live system this re-reads your Muse chats.");
+  }, 1200);
+};
 
 loadItems().then(j => { items = j; render(); });
 </script>
