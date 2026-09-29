@@ -1,6 +1,8 @@
 # ADHD Project Manager
 
-> **Built for Muse.** A scheduled scan reads your Muse threads, catches everything you left midway, and puts it on one prioritized board that nudges you until it's actually shipped.
+> A generic task board exists a thousand times on GitHub. A board that reads your AI chats is the differentiator.
+
+ **Built for Muse.** A scheduled scan reads your Muse threads, catches everything you left midway, and puts it on one prioritized board that nudges you until it's actually shipped.
 
 ![Board](docs/screenshots/board.png)
 
