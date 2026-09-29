@@ -5,7 +5,7 @@
  **Built for Muse.** A scheduled scan reads your Muse threads, catches everything you left midway, and puts it on one prioritized board that nudges you until it's actually shipped.
 
 
-![Problem diagram: the trap, the insight, the machine](docs/problem-diagram.svg)
+![The reframe, the engine, the surface](docs/problem-diagram.svg)
 
 ![Board](docs/screenshots/board.png)
 
@@ -26,6 +26,19 @@ Three steps, on a loop:
 1. **Scan** — on a schedule, an agent reads every thread (main chat + side chats; email and calendar are context only) and finds open loops: started-but-unfinished work, unconfirmed commitments, threads that went quiet while waiting on you.
 2. **Board** — open loops land on one prioritized board. The top item becomes the "Right now" hero. Each card shows where it came from, so you can jump straight back to context.
 3. **Nudge** — items stay on the board until you confirm they're shipped. You can snooze with a comeback date. *Produced is not shipped* — only your confirmation clears an item.
+
+## Why it's designed this way
+
+Every choice maps to how my brain actually fails:
+
+- **One "Right now," not a list** — a list is a choice, and a choice is paralysis. One item is a starting gun.
+- **Focus view holds the full context** — working memory is the bottleneck. If I have to reconstruct why something mattered, I've already lost it.
+- **Urgency is explained, and I can override it** — the system suggests, I decide. A black box I'd stop trusting; a transparent one I can argue with.
+- **"Produced is not shipped"** — checking a box feels like progress. It isn't. Only my confirmation that I acted clears an item.
+- **Shipped items stay visible** — progress that vanishes teaches nothing. A visible log is evidence I finish things.
+- **Snooze needs a comeback date** — "later" is where things go to die. A date turns it into a future appointment with myself.
+- **Sorted by urgency, not by project** — attention doesn't care which project something belongs to. The board follows attention, not taxonomy.
+
 
 ## Try the demo
 
