@@ -7,7 +7,7 @@
 
 ![The reframe, the engine, the surface](docs/problem-diagram.svg)
 
-![Board](docs/screenshots/board.png)
+![Board](docs/screenshots/board.png?v=3)
 
 ## The story
 
