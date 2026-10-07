@@ -1,1 +1,105 @@
-[{"detail":"Toothache started Tuesday on the lower right molar. Called once, got voicemail. Call the clinic directly — online booking shows no slots this week.","due":"2026-10-02","id":"sample-01","note":"Toothache since Tuesday. Call before Friday or it becomes a root canal saga.","priority":"urgent","source_chat":"Sample: Personal","source_fingerprint":"sample","status":"open","title":"Book dentist appointment","why_urgent":"Pain is getting worse and Friday is the last day to call before the weekend. Waiting risks a root canal."},{"detail":"Signed up three weeks ago for a one-off project. Cancel under Settings → Billing; it takes effect immediately. Keep the confirmation email.","due":"2026-09-29","id":"sample-02","note":"$29/mo starts charging Monday. Cancel in settings, confirm by email.","priority":"urgent","source_chat":"Sample: Money","source_fingerprint":"sample","status":"open","title":"Cancel free trial before it renews","why_urgent":"Renews Monday at $29/mo — cancel today or pay for a month you won't use."},{"detail":"Receipts are in the inbox folder — mostly meals and one flight. Use the usual spreadsheet template; just needs totals and project codes.","id":"sample-03","note":"Receipts are in the inbox folder. Finance deadline is Friday 5pm.","priority":"high","source_chat":"Sample: Work","source_fingerprint":"sample","status":"open","title":"Send Q3 expense report","why_urgent":"Finance deadline is Friday 5pm and reimbursements only run twice a month — miss it and the money waits."},{"detail":"Asked about the parking-spot add-on two weeks ago. Landlord said they'd check with management. Nudge Thursday, then decide on the renewal either way.","id":"sample-04","note":"Waiting on their answer about the parking spot. Nudge if no reply by Thursday.","priority":"high","source_chat":"Sample: Personal","source_fingerprint":"sample","status":"waiting","title":"Reply to landlord about lease renewal","why_urgent":"The renewal window is closing and the parking question blocks the decision."},{"detail":"Results section is blank. The numbers are already in the spreadsheet — needs the before/after paragraph and one chart.","id":"sample-05","note":"Results section is still blank. 45 focused minutes and it's done.","priority":"normal","source_chat":"Sample: Career","source_fingerprint":"sample","status":"open","title":"Finish portfolio case study draft","why_urgent":"No hard deadline, but it's the last unfinished draft and it's 45 minutes from done. Momentum matters."},{"detail":"Sam is traveling until the weekend. When this resurfaces: pick two date options and check train prices.","id":"sample-06","note":"Snoozed until next week — Sam is traveling.","priority":"normal","snooze_until":"2026-10-05","source_chat":"Sample: Personal","source_fingerprint":"sample","status":"snoozed","title":"Plan weekend trip with Sam","why_urgent":""},{"detail":"Back is fine for now. When budget allows: cap $400, must fit the 120cm desk.","id":"sample-07","note":"Nice-to-have. Back is fine for now; revisit when budget allows.","priority":"low","source_chat":"Sample: Backlog","source_fingerprint":"sample","status":"open","title":"Research standing desks","why_urgent":""},{"detail":"Fern and the pothos. Fern first — its soil is dry.","id":"sample-08","note":"The fern is judging you.","priority":"low","source_chat":"Sample: Backlog","source_fingerprint":"sample","status":"open","title":"Water the plants","why_urgent":""}]
+[
+ {
+  "detail": "Toothache started Tuesday on the lower right molar. Called once, got voicemail. Call the clinic directly \u2014 online booking shows no slots this week.",
+  "due": "2026-10-02",
+  "id": "sample-01",
+  "note": "Toothache since Tuesday. Call before Friday or it becomes a root canal saga.",
+  "priority": "urgent",
+  "source_chat": "Sample: Personal",
+  "source_fingerprint": "sample",
+  "status": "open",
+  "title": "Book dentist appointment",
+  "why_urgent": "Pain is getting worse and Friday is the last day to call before the weekend. Waiting risks a root canal."
+ },
+ {
+  "detail": "Signed up three weeks ago for a one-off project. Cancel under Settings \u2192 Billing; it takes effect immediately. Keep the confirmation email.",
+  "due": "2026-09-29",
+  "id": "sample-02",
+  "note": "$29/mo starts charging Monday. Cancel in settings, confirm by email.",
+  "priority": "urgent",
+  "source_chat": "Sample: Money",
+  "source_fingerprint": "sample",
+  "status": "open",
+  "title": "Cancel free trial before it renews",
+  "why_urgent": "Renews Monday at $29/mo \u2014 cancel today or pay for a month you won't use."
+ },
+ {
+  "detail": "Receipts are in the inbox folder \u2014 mostly meals and one flight. Use the usual spreadsheet template; just needs totals and project codes.",
+  "id": "sample-03",
+  "note": "Receipts are in the inbox folder. Finance deadline is Friday 5pm.",
+  "priority": "high",
+  "source_chat": "Sample: Work",
+  "source_fingerprint": "sample",
+  "status": "open",
+  "title": "Send Q3 expense report",
+  "why_urgent": "Finance deadline is Friday 5pm and reimbursements only run twice a month \u2014 miss it and the money waits."
+ },
+ {
+  "detail": "Asked about the parking-spot add-on two weeks ago. Landlord said they'd check with management. Nudge Thursday, then decide on the renewal either way.",
+  "id": "sample-04",
+  "note": "Waiting on their answer about the parking spot. Nudge if no reply by Thursday.",
+  "priority": "high",
+  "source_chat": "Sample: Personal",
+  "source_fingerprint": "sample",
+  "status": "waiting",
+  "title": "Reply to landlord about lease renewal",
+  "why_urgent": "The renewal window is closing and the parking question blocks the decision."
+ },
+ {
+  "detail": "Results section is blank. The numbers are already in the spreadsheet \u2014 needs the before/after paragraph and one chart.",
+  "id": "sample-05",
+  "note": "Results section is still blank. 45 focused minutes and it's done.",
+  "priority": "normal",
+  "source_chat": "Sample: Career",
+  "source_fingerprint": "sample",
+  "status": "open",
+  "title": "Finish portfolio case study draft",
+  "why_urgent": "No hard deadline, but it's the last unfinished draft and it's 45 minutes from done. Momentum matters."
+ },
+ {
+  "detail": "Sam is traveling until the weekend. When this resurfaces: pick two date options and check train prices.",
+  "id": "sample-06",
+  "note": "Snoozed until next week \u2014 Sam is traveling.",
+  "priority": "normal",
+  "snooze_until": "2026-10-05",
+  "source_chat": "Sample: Personal",
+  "source_fingerprint": "sample",
+  "status": "snoozed",
+  "title": "Plan weekend trip with Sam",
+  "why_urgent": ""
+ },
+ {
+  "detail": "Back is fine for now. When budget allows: cap $400, must fit the 120cm desk.",
+  "id": "sample-07",
+  "note": "Nice-to-have. Back is fine for now; revisit when budget allows.",
+  "priority": "low",
+  "source_chat": "Sample: Backlog",
+  "source_fingerprint": "sample",
+  "status": "open",
+  "title": "Research standing desks",
+  "why_urgent": ""
+ },
+ {
+  "detail": "Fern and the pothos. Fern first \u2014 its soil is dry.",
+  "id": "sample-08",
+  "note": "The fern is judging you.",
+  "priority": "low",
+  "source_chat": "Sample: Backlog",
+  "source_fingerprint": "sample",
+  "status": "open",
+  "title": "Water the plants",
+  "why_urgent": ""
+ },
+ {
+  "id": "sample-09",
+  "title": "Look into coworking day passes",
+  "priority": "low",
+  "status": "dropped",
+  "source_chat": "Sample: Backlog",
+  "source_fingerprint": "sample",
+  "note": "Dropped \u2014 the home setup is fine for now. Resurface if the lease situation changes.",
+  "detail": "Was curious about day passes downtown. Decided the home setup works; not worth the board space right now.",
+  "why_urgent": "",
+  "dropped_at": "2026-10-06"
+ }
+]

@@ -69,6 +69,7 @@
   .chip.src { background: #eef2ff; color: var(--accent); }
   .chip.snoozed { background: #fef3c7; color: #92400e; }
   .chip.waiting { background: #e0f2fe; color: #0369a1; }
+  .chip.dropped { background: #f3f4f6; color: #6b7280; }
   .actions { display: flex; gap: 8px; flex-wrap: wrap; }
   button {
     font-size: 13px; font-weight: 600; cursor: pointer;
@@ -165,6 +166,7 @@
     <button class="ghost-light" id="hero-focus">Focus</button>
     <button class="ghost-light" id="hero-ship">Mark shipped</button>
     <button class="ghost-light" id="hero-snooze">Snooze</button>
+    <button class="ghost-light" id="hero-drop">Drop</button>
   </div>
 </section>
 
@@ -173,14 +175,18 @@
 <h3 class="section">Shipped — proof it happened</h3>
 <div id="shipped-log"></div>
 
+<h3 class="section">Dropped — out of sight, not gone</h3>
+<div id="dropped-log"></div>
+
 <div class="overlay" id="overlay"><div class="dialog" id="dialog"></div></div>
 <div class="toast" id="toast"></div>
 
 <footer>
   Static demo of the <strong>ADHD Project Manager</strong> — built for the Muse environment.
   This mirrors the real board: focus view with full context, urgency overrides, snooze with
-  comeback dates, and shipping that requires your confirmation (shipped items land in the log
-  below — they don't just vanish). In the live setup, a scheduled scan refreshes this data and
+  comeback dates, dropping items off the board without deleting them (they wait in the
+  Dropped list until you resurface them), and shipping that requires your confirmation
+  (shipped items land in the log below — they don't just vanish). In the live setup, a scheduled scan refreshes this data and
   the buttons write back. Here everything is fictional sample data and resets on reload.
   Make it yours: replace the items below with your own scan output matching
   <a href="../data/schema.md"><code>data/schema.md</code></a>.
@@ -235,7 +241,13 @@ const SAMPLE_ITEMS = [
     "source_chat": "Sample: Backlog", "source_fingerprint": "sample",
     "note": "The fern is judging you.",
     "detail": "Fern and the pothos. Fern first — its soil is dry.",
-    "why_urgent": "" }
+    "why_urgent": "" },
+  { "id": "sample-09", "title": "Look into coworking day passes", "priority": "low", "status": "dropped",
+    "source_chat": "Sample: Backlog", "source_fingerprint": "sample",
+    "note": "Dropped — the home setup is fine for now. Resurface if the lease situation changes.",
+    "detail": "Was curious about day passes downtown. Decided the home setup works; not worth the board space right now.",
+    "why_urgent": "",
+    "dropped_at": "2026-10-06" }
 ];
 
 const PRIORITY_ORDER = { urgent: 0, high: 1, normal: 2, low: 3 };
@@ -243,21 +255,46 @@ const PRIORITY_LABEL = { urgent: "Urgent", high: "High", normal: "Normal", low: 
 let items = [];
 let lastScan = new Date();
 
+/* Keep the demo evergreen: shift sample dates so they stay relative to
+ * today, preserving each item's original offset from the baseline. */
+const DATE_BASELINE = "2026-09-29";
+function shiftDate(iso) {
+  if (!iso) return iso;
+  const base = new Date(DATE_BASELINE + "T12:00:00");
+  const d = new Date(iso + "T12:00:00");
+  if (isNaN(d)) return iso;
+  const offsetDays = Math.round((d - base) / 864e5);
+  const today = new Date();
+  today.setHours(12, 0, 0, 0);
+  const out = new Date(today.getTime() + offsetDays * 864e5);
+  return out.toISOString().slice(0, 10);
+}
+
 async function loadItems() {
+  let list;
   try {
     const res = await fetch("../data/sample-items.json");
     if (res.ok) {
       const j = await res.json();
-      if (Array.isArray(j) && j.length) return j;
+      if (Array.isArray(j) && j.length) list = j;
     }
   } catch (e) { /* file:// or missing — fall back to embedded */ }
-  return SAMPLE_ITEMS.map(i => ({ ...i }));
+  if (!list) list = SAMPLE_ITEMS.map(i => ({ ...i }));
+  list.forEach(i => {
+    i.due = shiftDate(i.due);
+    i.snooze_until = shiftDate(i.snooze_until);
+  });
+  return list;
 }
 
 function openItems() {
-  return items.filter(i => i.status !== "shipped")
+  return items.filter(i => i.status !== "shipped" && i.status !== "dropped")
     .sort((a, b) => (PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]) ||
       String(a.due || "9999").localeCompare(String(b.due || "9999")));
+}
+function droppedItems() {
+  return items.filter(i => i.status === "dropped")
+    .sort((a, b) => String(b.dropped_at || "").localeCompare(String(a.dropped_at || "")));
 }
 function shippedItems() {
   return items.filter(i => i.status === "shipped")
@@ -283,10 +320,13 @@ function toast(msg) {
 function render() {
   const open = openItems();
   const shipped = shippedItems();
+  const dropped = droppedItems();
   document.getElementById("scanline").textContent =
     `Demo scan · ${lastScan.toLocaleTimeString([], {hour: "numeric", minute: "2-digit"})} · sample data (resets on reload)`;
   document.getElementById("count").textContent =
-    `${open.length} open item${open.length === 1 ? "" : "s"}${shipped.length ? ` · ${shipped.length} shipped` : ""}`;
+    `${open.length} open item${open.length === 1 ? "" : "s"}` +
+    `${shipped.length ? ` · ${shipped.length} shipped` : ""}` +
+    `${dropped.length ? ` · ${dropped.length} dropped` : ""}`;
 
   const hero = document.getElementById("hero");
   const top = open.find(i => i.priority === "urgent" && i.status === "open") || open[0];
@@ -299,6 +339,7 @@ function render() {
     document.getElementById("hero-focus").onclick = () => openFocus(top.id);
     document.getElementById("hero-ship").onclick = () => confirmShip(top.id);
     document.getElementById("hero-snooze").onclick = () => snoozeDialog(top.id);
+    document.getElementById("hero-drop").onclick = () => dropItem(top.id);
   } else {
     hero.style.display = "none";
   }
@@ -324,12 +365,14 @@ function render() {
           <button data-act="focus">Focus</button>
           <button class="primary" data-act="ship">Mark shipped</button>
           <button data-act="snooze">Snooze</button>
+          <button data-act="drop">Drop</button>
         </div>`;
       el.querySelector("h4").textContent = item.title;
       el.querySelector(".note").textContent = item.note || "";
       el.querySelector('[data-act="focus"]').onclick = () => openFocus(item.id);
       el.querySelector('[data-act="ship"]').onclick = () => confirmShip(item.id);
       el.querySelector('[data-act="snooze"]').onclick = () => snoozeDialog(item.id);
+      el.querySelector('[data-act="drop"]').onclick = () => dropItem(item.id);
       board.appendChild(el);
     });
   });
@@ -350,9 +393,41 @@ function render() {
       log.appendChild(el);
     });
   }
+
+  const dlog = document.getElementById("dropped-log");
+  dlog.innerHTML = "";
+  if (!dropped.length) {
+    dlog.innerHTML = `<p class="empty">Nothing dropped. Dropping removes an item from the board without deleting it — it waits here until you resurface it or the scan finds something related.</p>`;
+  } else {
+    dropped.forEach(item => {
+      const el = document.createElement("div");
+      el.className = "card";
+      el.innerHTML = `<h4></h4><div class="note"></div><div class="chips">${chip("dropped", "dropped")}${chip(item.source_chat, "src")}</div>
+        <div class="actions"><button data-act="resurface">Resurface</button></div>`;
+      el.querySelector("h4").textContent = item.title;
+      el.querySelector(".note").textContent = item.note || "";
+      el.querySelector('[data-act="resurface"]').onclick = () => resurfaceItem(item.id);
+      dlog.appendChild(el);
+    });
+  }
 }
 
-/* ---------- modal helpers ---------- */
+function dropItem(id) {
+  const item = findItem(id);
+  if (!item) return;
+  item.status = "dropped";
+  item.dropped_at = new Date().toISOString().slice(0, 10);
+  closeDialog(); render();
+  toast("Dropped. It's in the Dropped list below if you want it back.");
+}
+function resurfaceItem(id) {
+  const item = findItem(id);
+  if (!item) return;
+  item.status = "open";
+  item.dropped_at = undefined;
+  render();
+  toast("Back on the board.");
+}
 
 const overlay = document.getElementById("overlay");
 const dialog = document.getElementById("dialog");
@@ -385,6 +460,7 @@ function openFocus(id) {
     <div class="frow"><label>Snooze until</label><input type="date" id="f-snooze" value="${esc(item.snooze_until || "")}"></div>
     <div class="actions">
       <button id="f-save">Save changes</button>
+      <button id="f-drop">Drop item</button>
       <button class="primary" id="f-ship">Mark shipped</button>
     </div>`);
   dialog.querySelectorAll("#seg button").forEach(b => {
@@ -404,6 +480,7 @@ function openFocus(id) {
     toast("Saved. The board re-sorts around your call.");
   };
   document.getElementById("f-ship").onclick = () => confirmShip(id);
+  document.getElementById("f-drop").onclick = () => dropItem(id);
 }
 
 /* ---------- ship with confirmation ---------- */
