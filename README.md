@@ -9,6 +9,8 @@
 
 ![Board](docs/screenshots/board.png?v=3)
 
+![Focus view](docs/screenshots/focus.png)
+
 ## The story
 
 I have ADHD. My ideas come in bursts and my threads pile up — a job application half-drafted here, a plan with no next step there, a promise I made three chats ago that quietly died. I kept losing things not because I didn't care, but because they shared a scroll with everything else.
