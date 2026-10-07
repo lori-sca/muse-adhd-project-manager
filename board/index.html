@@ -7,88 +7,165 @@
 <style>
   /* THEME: tweak these to make it yours */
   :root {
-    --bg: #f6f5f2;
+    --bg: #f4f3f1;
     --card: #ffffff;
     --ink: #1c1a17;
+    --ink-soft: #55514a;
     --muted: #8a857c;
-    --accent: #4f46e5;
+    --navy: #141d2b;
+    --navy-soft: #1f2a3d;
+    --green: #2f7d5f;
+    --coral: #e07a5f;
+    --orange: #dd8a3d;
     --urgent: #dc2626;
-    --high: #ea580c;
-    --normal: #4f46e5;
-    --low: #6b7280;
-    --radius: 14px;
+    --line: #e7e4dd;
+    --radius: 16px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background: var(--bg); color: var(--ink);
-    max-width: 860px; margin: 0 auto; padding: 28px 18px 60px;
+    max-width: 1380px; margin: 0 auto; padding: 26px 26px 60px;
     line-height: 1.45;
   }
-  header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
-  .title-row { display: flex; align-items: center; gap: 12px; }
-  h1 { font-size: 24px; letter-spacing: -0.02em; }
-  .tagline { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+
+  /* ---------- header ---------- */
+  header.top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+  .app-pill {
+    display: inline-block; font-size: 12px; font-weight: 600; color: var(--ink-soft);
+    background: #eceae5; border: 1px solid var(--line); border-radius: 8px;
+    padding: 5px 10px; margin-bottom: 10px;
+  }
   .badge {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
     background: #fef3c7; color: #92400e; border: 1px solid #fcd34a;
-    padding: 5px 10px; border-radius: 999px; white-space: nowrap;
+    padding: 4px 9px; border-radius: 999px; vertical-align: middle; margin-left: 8px;
   }
-  .top-actions { display: flex; gap: 8px; }
-  .scanline { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
-  .count { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+  h1.page-title { font-size: clamp(30px, 4vw, 46px); font-weight: 700; letter-spacing: -0.02em; }
+  .top-actions { display: flex; gap: 10px; align-items: center; padding-top: 8px; }
+  .btn-refresh {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 15px; font-weight: 700; color: var(--green);
+    background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+    padding: 12px 22px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .btn-refresh:hover { border-color: var(--green); }
+  .btn-refresh:disabled { opacity: 0.6; cursor: wait; }
+  .btn-add-circle {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--card); border: 1px solid var(--line);
+    font-size: 26px; font-weight: 300; color: var(--ink); cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06); line-height: 1;
+  }
+  .btn-add-circle:hover { border-color: var(--green); color: var(--green); }
+
+  /* ---------- layout ---------- */
+  .cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: start; }
+  @media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
+  .kicker { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; color: var(--muted); margin-bottom: 14px; }
+  .kicker .dot { color: #e0655a; margin-left: 6px; }
+
+  /* ---------- hero (RIGHT NOW) ---------- */
   .hero {
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
-    color: #fff; border-radius: var(--radius);
-    padding: 22px; margin-bottom: 26px;
-    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+    background: var(--navy); color: #fff; border-radius: 26px;
+    padding: 44px 44px 40px; position: relative; overflow: hidden;
+    box-shadow: 0 18px 44px rgba(20, 29, 43, 0.28);
   }
-  .hero .kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; opacity: 0.85; margin-bottom: 8px; }
-  .hero h2 { font-size: 21px; margin-bottom: 8px; }
-  .hero p { font-size: 14px; opacity: 0.92; }
-  .hero .meta { margin-top: 12px; font-size: 12px; opacity: 0.9; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-  .hero .actions { margin-top: 14px; display: flex; gap: 8px; }
-  .hero .chip { background: rgba(255,255,255,0.18); color: #fff; }
-  h3.section { font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin: 26px 0 12px; }
+  .hero::after {
+    content: ""; position: absolute; top: -90px; right: -90px; width: 240px; height: 240px;
+    border-radius: 50%; background: rgba(255,255,255,0.045);
+  }
+  .hero .pri { font-size: 13px; font-weight: 800; letter-spacing: 0.16em; color: var(--coral); margin-bottom: 18px; }
+  .hero h2 { font-size: clamp(28px, 3.2vw, 44px); font-weight: 700; letter-spacing: -0.015em; line-height: 1.18; margin-bottom: 18px; }
+  .hero .desc { font-size: 16px; color: #b9c2d0; line-height: 1.6; margin-bottom: 26px; max-width: 46ch; }
+  .hero .meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 30px; font-size: 14px; color: #dbe1ea; }
+  .hero .meta .clock { color: #9aa5b5; }
+  .src-pill {
+    font-size: 12px; font-weight: 700; background: rgba(255,255,255,0.14); color: #fff;
+    border-radius: 999px; padding: 5px 12px;
+  }
+  .hero .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-focus-hero {
+    font-size: 16px; font-weight: 700; background: #fff; color: var(--ink);
+    border: none; border-radius: 999px; padding: 15px 30px; cursor: pointer;
+  }
+  .btn-focus-hero:hover { background: #f0eee9; }
+  .btn-adjust {
+    font-size: 16px; font-weight: 700; background: transparent; color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.55); border-radius: 999px; padding: 15px 30px; cursor: pointer;
+  }
+  .btn-adjust:hover { border-color: #fff; }
+
+  .scan-block { margin-top: 34px; }
+  .scan-block h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .scan-block p { font-size: 13px; color: var(--muted); }
+
+  /* ---------- board column ---------- */
+  .board-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .board-head h2 { font-size: clamp(26px, 3vw, 38px); font-weight: 700; letter-spacing: -0.015em; }
+  .board-tools { display: flex; align-items: center; gap: 16px; }
+  .dropped-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 14px; font-weight: 700; color: var(--ink-soft);
+    background: none; border: none; cursor: pointer; padding: 6px 4px;
+  }
+  .dropped-pill:hover { color: var(--ink); }
+  .add-link {
+    font-size: 15px; font-weight: 700; color: var(--green);
+    background: none; border: none; cursor: pointer; padding: 6px 4px;
+  }
+  .add-link:hover { text-decoration: underline; }
+
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; background: #eceae5; border-radius: 18px; padding: 6px; margin-bottom: 20px; }
+  .tile {
+    background: transparent; border: none; border-radius: 14px; cursor: pointer;
+    padding: 12px 6px; text-align: center; color: var(--ink-soft);
+  }
+  .tile .n { font-size: 24px; font-weight: 800; color: var(--ink); display: block; }
+  .tile .l { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .tile.active { background: var(--card); box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .tile.active .l { color: var(--green); }
+
   .card {
     background: var(--card); border-radius: var(--radius);
-    padding: 16px 18px; margin-bottom: 12px;
-    border: 1px solid #eceae5;
-    border-left: 4px solid var(--normal);
+    padding: 20px 22px; margin-bottom: 14px;
+    border: 1px solid var(--line); border-left: 4px solid var(--orange);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   }
   .card.urgent { border-left-color: var(--urgent); }
-  .card.high { border-left-color: var(--high); }
-  .card.low { border-left-color: var(--low); opacity: 0.92; }
-  .card h4 { font-size: 16px; margin-bottom: 6px; }
-  .card .note { font-size: 13px; color: #55514a; margin-bottom: 10px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-  .chip {
-    font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
-    background: #f1efeB; color: #6b655c;
+  .card.high { border-left-color: var(--orange); }
+  .card.normal { border-left-color: var(--green); }
+  .card.low { border-left-color: #b9b3a8; }
+  .card .cat-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .card .cat { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--muted); }
+  .card .pri-tag { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .card .pri-tag b { font-weight: 800; }
+  .card .pri-tag b.p-urgent { color: var(--urgent); }
+  .card .pri-tag b.p-high { color: var(--orange); }
+  .card .pri-tag b.p-normal { color: var(--green); }
+  .card .pri-tag b.p-low { color: var(--muted); }
+  .card h4 { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .card .desc { font-size: 14px; color: var(--ink-soft); margin-bottom: 14px; }
+  .card .meta { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); margin-bottom: 16px; flex-wrap: wrap; }
+  .card .meta .src-pill { background: #eef2ff; color: #4f46e5; }
+  .card .card-actions { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); margin: 0 -22px -20px; }
+  .card .card-actions button {
+    background: none; border: none; cursor: pointer; padding: 15px;
+    font-size: 15px; font-weight: 700; color: var(--green);
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .chip.src { background: #eef2ff; color: var(--accent); }
-  .chip.snoozed { background: #fef3c7; color: #92400e; }
-  .chip.waiting { background: #e0f2fe; color: #0369a1; }
-  .chip.dropped { background: #f3f4f6; color: #6b7280; }
-  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  button {
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    border: 1px solid #e2dfd8; background: #fff; color: var(--ink);
-    padding: 7px 14px; border-radius: 999px;
-  }
-  button:hover { border-color: var(--accent); color: var(--accent); }
-  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  button.primary:hover { background: #4338ca; color: #fff; }
-  button.ghost-light { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: #fff; }
-  button.ghost-light:hover { background: rgba(255,255,255,0.28); color: #fff; border-color: #fff; }
-  button:disabled { opacity: 0.5; cursor: not-allowed; }
-  .empty { color: var(--muted); font-size: 14px; padding: 12px 0; }
+  .card .card-actions button + button { border-left: 1px solid var(--line); }
+  .card .card-actions button:hover { background: #f8f7f5; }
+  .card .card-actions button.drop-btn { color: var(--muted); font-weight: 600; }
+  .empty { color: var(--muted); font-size: 14px; padding: 16px 4px; }
 
-  /* Shipped log */
-  .shipped { opacity: 0.85; }
-  .shipped .done-note { font-size: 13px; color: #3f6212; margin-top: 6px; }
+  /* ---------- shipped / misc ---------- */
+  h3.section { font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin: 30px 0 14px; }
+  .shipped-card { opacity: 0.88; border-left-color: var(--green); }
+  .shipped-card .done-note { font-size: 13px; color: #3f6212; margin-top: 8px; }
 
-  /* Modal */
+  /* ---------- modal ---------- */
   .overlay {
     position: fixed; inset: 0; background: rgba(28, 26, 23, 0.45);
     display: none; align-items: flex-start; justify-content: center;
@@ -96,98 +173,136 @@
   }
   .overlay.open { display: flex; }
   .dialog {
-    background: var(--card); border-radius: 18px; max-width: 560px; width: 100%;
-    padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    background: #f7f6f4; border-radius: 22px; max-width: 640px; width: 100%;
+    padding: 30px 32px; box-shadow: 0 24px 70px rgba(0,0,0,0.28); position: relative;
   }
-  .dialog h2 { font-size: 20px; margin-bottom: 4px; padding-right: 28px; }
-  .dialog .sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
   .dialog .close-x {
-    float: right; border: none; background: none; font-size: 20px;
-    color: var(--muted); padding: 0 4px; line-height: 1;
+    position: absolute; top: 18px; right: 20px; border: none; background: none;
+    font-size: 22px; color: var(--muted); cursor: pointer; padding: 4px;
   }
   .dialog .close-x:hover { color: var(--ink); }
-  .frow { margin-bottom: 16px; }
-  .frow > label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-  .frow .body { font-size: 14px; }
-  .seg { display: flex; gap: 6px; flex-wrap: wrap; }
-  .seg button.on-urgent { background: var(--urgent); border-color: var(--urgent); color: #fff; }
-  .seg button.on-high { background: var(--high); border-color: var(--high); color: #fff; }
-  .seg button.on-normal { background: var(--normal); border-color: var(--normal); color: #fff; }
-  .seg button.on-low { background: var(--low); border-color: var(--low); color: #fff; }
-  input[type="text"], input[type="date"], textarea {
-    width: 100%; font-size: 14px; padding: 8px 12px;
-    border: 1px solid #e2dfd8; border-radius: 10px; font-family: inherit;
+  .dialog .src-head { margin-bottom: 4px; }
+  .dialog .src-head .chat-tag {
+    display: inline-block; font-size: 11px; font-weight: 700; color: #4f46e5;
+    background: #eef2ff; border-radius: 999px; padding: 4px 10px; margin-bottom: 8px;
   }
-  textarea { min-height: 64px; resize: vertical; }
-  .check-row { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; margin: 12px 0; }
-  .check-row input { margin-top: 3px; }
-  .dialog .actions { margin-top: 18px; justify-content: flex-end; }
-  .creed { font-size: 13px; color: #6b655c; background: #f6f5f2; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; }
+  .dialog h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .dialog .hint { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+  .dialog .why { font-size: 15px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 8px; }
+  .dialog .override { font-size: 14px; color: var(--green); font-weight: 600; margin-bottom: 20px; }
+  .frow { margin-bottom: 16px; }
+  .frow > label { display: block; font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+  .frow input[type="text"], .frow input[type="date"], .frow textarea, .frow select {
+    width: 100%; font-size: 15px; padding: 13px 16px; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 14px; font-family: inherit; background: #fff;
+  }
+  .frow textarea { min-height: 90px; resize: vertical; line-height: 1.55; }
+  .frow-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .dialog .actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .btn {
+    font-size: 14px; font-weight: 700; cursor: pointer; border-radius: 999px;
+    padding: 11px 22px; border: 1px solid var(--line); background: #fff; color: var(--ink);
+  }
+  .btn:hover { border-color: var(--green); color: var(--green); }
+  .btn.primary { background: var(--green); border-color: var(--green); color: #fff; }
+  .btn.primary:hover { background: #27684f; color: #fff; }
+  .btn.danger-ghost { color: var(--muted); }
+  .creed { font-size: 13px; color: var(--ink-soft); background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; }
   .creed strong { color: var(--ink); }
+  .check-row { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; margin: 14px 0; color: var(--ink-soft); }
+  .check-row input { margin-top: 3px; }
+  .seg { display: flex; gap: 6px; flex-wrap: wrap; }
+  .seg button { font-size: 13px; font-weight: 700; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+  .seg button.on-urgent { background: var(--urgent); border-color: var(--urgent); color: #fff; }
+  .seg button.on-high { background: var(--orange); border-color: var(--orange); color: #fff; }
+  .seg button.on-normal { background: var(--green); border-color: var(--green); color: #fff; }
+  .seg button.on-low { background: #6b7280; border-color: #6b7280; color: #fff; }
 
-  /* Toast */
+  /* ---------- toast ---------- */
   .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: var(--ink); color: #fff; font-size: 13px; padding: 10px 18px;
+    background: var(--ink); color: #fff; font-size: 13px; padding: 11px 20px;
     border-radius: 999px; opacity: 0; transition: all 0.25s; z-index: 100;
     max-width: 90vw; text-align: center; pointer-events: none;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   footer {
-    margin-top: 40px; padding-top: 18px; border-top: 1px solid #e7e4dd;
-    font-size: 12px; color: var(--muted);
+    margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--line);
+    font-size: 12px; color: var(--muted); line-height: 1.6;
   }
-  footer a { color: var(--accent); }
+  footer a { color: var(--green); }
 </style>
 </head>
 <body>
 
 <header class="top">
-  <div class="title-row">
-    <h1>ADHD Project Manager</h1>
-    <span class="badge">SAMPLE DATA</span>
+  <div>
+    <span class="app-pill">ADHD Project Manager</span><span class="badge">SAMPLE DATA</span>
+    <h1 class="page-title">What needs your attention?</h1>
   </div>
   <div class="top-actions">
-    <button id="scan-btn" title="Demo only: simulates a scan">Scan now</button>
-    <button id="add-btn" class="primary" title="Demo only: adds to this session">+ Add item</button>
+    <button class="btn-refresh" id="scan-btn" title="Demo only: simulates a scan">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+      Refresh
+    </button>
+    <button class="btn-add-circle" id="add-btn" title="Demo only: adds to this session">+</button>
   </div>
 </header>
-<p class="tagline">Nothing left unfinished. A scheduled scan catches what you left midway — this board is where it lands.</p>
-<div class="scanline" id="scanline"></div>
-<div class="count" id="count"></div>
 
-<section class="hero" id="hero" style="display:none">
-  <div class="kicker">RIGHT NOW</div>
-  <h2 id="hero-title"></h2>
-  <p id="hero-note"></p>
-  <div class="meta" id="hero-meta"></div>
-  <div class="actions">
-    <button class="ghost-light" id="hero-focus">Focus</button>
-    <button class="ghost-light" id="hero-ship">Mark shipped</button>
-    <button class="ghost-light" id="hero-snooze">Snooze</button>
-    <button class="ghost-light" id="hero-drop">Drop</button>
-  </div>
-</section>
+<div class="cols">
+  <section>
+    <div class="kicker">RIGHT NOW <span class="dot">●</span></div>
+    <div class="hero" id="hero" style="display:none">
+      <div class="pri" id="hero-pri"></div>
+      <h2 id="hero-title"></h2>
+      <p class="desc" id="hero-desc"></p>
+      <div class="meta">
+        <span class="clock" id="hero-time"></span>
+        <span class="src-pill">Chat</span>
+        <span id="hero-src"></span>
+      </div>
+      <div class="actions">
+        <button class="btn-focus-hero" id="hero-focus">→&nbsp; Focus on this</button>
+        <button class="btn-adjust" id="hero-adjust">Adjust</button>
+      </div>
+    </div>
+    <div class="scan-block">
+      <h3>Daily scan</h3>
+      <p id="scanline"></p>
+    </div>
+  </section>
 
-<div id="board"></div>
+  <section>
+    <div class="kicker">YOUR BOARD</div>
+    <div class="board-head">
+      <h2>Open loops</h2>
+      <div class="board-tools">
+        <button class="dropped-pill" id="dropped-pill" title="Show dropped items">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          <span id="dropped-count">Dropped 0</span>
+        </button>
+        <button class="add-link" id="add-link">＋ Add</button>
+      </div>
+    </div>
+    <div class="tiles" id="tiles"></div>
+    <div id="board"></div>
 
-<h3 class="section">Shipped — proof it happened</h3>
-<div id="shipped-log"></div>
-
-<h3 class="section">Dropped — out of sight, not gone</h3>
-<div id="dropped-log"></div>
+    <h3 class="section">Shipped — proof it happened</h3>
+    <div id="shipped-log"></div>
+  </section>
+</div>
 
 <div class="overlay" id="overlay"><div class="dialog" id="dialog"></div></div>
 <div class="toast" id="toast"></div>
 
 <footer>
   Static demo of the <strong>ADHD Project Manager</strong> — built for the Muse environment.
-  This mirrors the real board: focus view with full context, urgency overrides, snooze with
-  comeback dates, dropping items off the board without deleting them (they wait in the
-  Dropped list until you resurface them), and shipping that requires your confirmation
-  (shipped items land in the log below — they don't just vanish). In the live setup, a scheduled scan refreshes this data and
-  the buttons write back. Here everything is fictional sample data and resets on reload.
+  This mirrors the real board down to the layout: the Right-Now hero, urgency tiles, open-loop
+  cards, the focus dialog with full context, snooze with comeback dates, dropping items off the
+  board without deleting them, and shipping that requires your confirmation (shipped items land
+  in the log — they don't just vanish). In the live setup, a scheduled scan refreshes this data
+  and the buttons write back. Here everything is fictional sample data and resets on reload.
   Make it yours: replace the items below with your own scan output matching
   <a href="../data/schema.md"><code>data/schema.md</code></a>.
 </footer>
@@ -201,8 +316,8 @@
 const SAMPLE_ITEMS = [
   { "id": "sample-01", "title": "Book dentist appointment", "priority": "urgent", "status": "open",
     "source_chat": "Sample: Personal", "source_fingerprint": "sample",
-    "note": "Toothache since Tuesday. Call before Friday or it becomes a root canal saga.",
-    "detail": "Toothache started Tuesday on the lower right molar. Called once, got voicemail. Call the clinic directly — online booking shows no slots this week.",
+    "note": "Toothache started Tuesday on the lower right molar. Called once, got voicemail. Call the clinic directly — online booking shows no slots this week.",
+    "detail": "Toothache since Tuesday. Pain is getting worse and Friday is the last day to call before the weekend. Waiting risks a root canal.",
     "why_urgent": "Pain is getting worse and Friday is the last day to call before the weekend. Waiting risks a root canal.",
     "due": "2026-10-02" },
   { "id": "sample-02", "title": "Cancel free trial before it renews", "priority": "urgent", "status": "open",
@@ -213,8 +328,8 @@ const SAMPLE_ITEMS = [
     "due": "2026-09-29" },
   { "id": "sample-03", "title": "Send Q3 expense report", "priority": "high", "status": "open",
     "source_chat": "Sample: Work", "source_fingerprint": "sample",
-    "note": "Receipts are in the inbox folder. Finance deadline is Friday 5pm.",
-    "detail": "Receipts are in the inbox folder — mostly meals and one flight. Use the usual spreadsheet template; just needs totals and project codes.",
+    "note": "Receipts are in the inbox folder — mostly meals and one flight. Use the usual spreadsheet template; just needs totals and project codes.",
+    "detail": "Receipts are in the inbox folder. Finance deadline is Friday 5pm and reimbursements only run twice a month — miss it and the money waits.",
     "why_urgent": "Finance deadline is Friday 5pm and reimbursements only run twice a month — miss it and the money waits." },
   { "id": "sample-04", "title": "Reply to landlord about lease renewal", "priority": "high", "status": "waiting",
     "source_chat": "Sample: Personal", "source_fingerprint": "sample",
@@ -252,8 +367,11 @@ const SAMPLE_ITEMS = [
 
 const PRIORITY_ORDER = { urgent: 0, high: 1, normal: 2, low: 3 };
 const PRIORITY_LABEL = { urgent: "Urgent", high: "High", normal: "Normal", low: "Low" };
+const STATUS_OPTIONS = ["open", "in-focus", "waiting", "parked", "dropped"];
+const STATUS_LABEL = { "open": "Open", "in-focus": "In focus", "waiting": "Waiting", "parked": "Parked", "dropped": "Dropped" };
 let items = [];
 let lastScan = new Date();
+let tileFilter = "open"; // open | urgent | waiting | shipped
 
 /* Keep the demo evergreen: shift sample dates so they stay relative to
  * today, preserving each item's original offset from the baseline. */
@@ -292,21 +410,32 @@ function openItems() {
     .sort((a, b) => (PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]) ||
       String(a.due || "9999").localeCompare(String(b.due || "9999")));
 }
-function droppedItems() {
-  return items.filter(i => i.status === "dropped")
-    .sort((a, b) => String(b.dropped_at || "").localeCompare(String(a.dropped_at || "")));
-}
 function shippedItems() {
   return items.filter(i => i.status === "shipped")
     .sort((a, b) => String(b.shipped_at || "").localeCompare(String(a.shipped_at || "")));
+}
+function droppedItems() {
+  return items.filter(i => i.status === "dropped")
+    .sort((a, b) => String(b.dropped_at || "").localeCompare(String(a.dropped_at || "")));
 }
 function esc(s) {
   const d = document.createElement("div");
   d.textContent = s == null ? "" : String(s);
   return d.innerHTML;
 }
-function chip(text, cls) { return `<span class="chip${cls ? " " + cls : ""}">${esc(text)}</span>`; }
-
+function catOf(item) {
+  const c = item.source_chat || "";
+  return esc(c.replace(/^Sample:\s*/, "").toUpperCase() || "GENERAL");
+}
+function priTag(p) {
+  return `<b class="p-${p}">${PRIORITY_LABEL[p]}</b> · sample`;
+}
+function dueLabel(item) {
+  if (!item.due) return "";
+  const d = new Date(item.due + "T12:00:00");
+  const s = d.toLocaleDateString([], { month: "short", day: "numeric" });
+  return `due ${s}`;
+}
 function toast(msg) {
   const t = document.getElementById("toast");
   t.textContent = msg;
@@ -321,63 +450,83 @@ function render() {
   const open = openItems();
   const shipped = shippedItems();
   const dropped = droppedItems();
+  const urgentCount = open.filter(i => i.priority === "urgent").length;
+  const waitingCount = open.filter(i => i.status === "waiting").length;
+
   document.getElementById("scanline").textContent =
     `Demo scan · ${lastScan.toLocaleTimeString([], {hour: "numeric", minute: "2-digit"})} · sample data (resets on reload)`;
-  document.getElementById("count").textContent =
-    `${open.length} open item${open.length === 1 ? "" : "s"}` +
-    `${shipped.length ? ` · ${shipped.length} shipped` : ""}` +
-    `${dropped.length ? ` · ${dropped.length} dropped` : ""}`;
+  document.getElementById("dropped-count").textContent = `Dropped ${dropped.length}`;
 
+  // hero = top open item
   const hero = document.getElementById("hero");
   const top = open.find(i => i.priority === "urgent" && i.status === "open") || open[0];
   if (top) {
     hero.style.display = "block";
+    document.getElementById("hero-pri").textContent = PRIORITY_LABEL[top.priority].toUpperCase() + " PRIORITY";
     document.getElementById("hero-title").textContent = top.title;
-    document.getElementById("hero-note").textContent = top.note || "";
-    document.getElementById("hero-meta").innerHTML =
-      chip(top.source_chat, "src") + (top.due ? chip("due " + top.due) : "");
+    document.getElementById("hero-desc").textContent = top.note || "";
+    document.getElementById("hero-time").textContent = "◷ " + (dueLabel(top) || "no due date");
+    document.getElementById("hero-src").textContent = top.source_chat || "";
     document.getElementById("hero-focus").onclick = () => openFocus(top.id);
-    document.getElementById("hero-ship").onclick = () => confirmShip(top.id);
-    document.getElementById("hero-snooze").onclick = () => snoozeDialog(top.id);
-    document.getElementById("hero-drop").onclick = () => dropItem(top.id);
+    document.getElementById("hero-adjust").onclick = () => openFocus(top.id);
   } else {
     hero.style.display = "none";
   }
 
+  // tiles
+  const tiles = [
+    { key: "open", n: open.length, l: "Open" },
+    { key: "urgent", n: urgentCount, l: "Urgent" },
+    { key: "waiting", n: waitingCount, l: "Waiting" },
+    { key: "shipped", n: shipped.length, l: "Shipped" },
+  ];
+  document.getElementById("tiles").innerHTML = tiles.map(t =>
+    `<button class="tile${tileFilter === t.key ? " active" : ""}" data-tile="${t.key}">
+       <span class="n">${t.n}</span><span class="l">${t.l}</span>
+     </button>`).join("");
+  document.querySelectorAll("#tiles .tile").forEach(b => {
+    b.onclick = () => { tileFilter = b.dataset.tile; render(); };
+  });
+
+  // cards
   const board = document.getElementById("board");
   board.innerHTML = "";
-  ["urgent", "high", "normal", "low"].forEach(p => {
-    const group = open.filter(i => i.priority === p);
-    if (!group.length) return;
-    const h = document.createElement("h3");
-    h.className = "section";
-    h.textContent = PRIORITY_LABEL[p] + (p === "low" ? " · backlog" : "");
-    board.appendChild(h);
-    group.forEach(item => {
+  let list = open;
+  if (tileFilter === "urgent") list = open.filter(i => i.priority === "urgent");
+  if (tileFilter === "waiting") list = open.filter(i => i.status === "waiting");
+  if (tileFilter === "shipped") {
+    if (!shipped.length) board.innerHTML = `<p class="empty">Nothing shipped yet.</p>`;
+    shipped.forEach(item => {
       const el = document.createElement("div");
-      el.className = "card " + p;
-      let chips = chip(PRIORITY_LABEL[p]) + chip(item.source_chat, "src");
-      if (item.status === "snoozed") chips += chip("snoozed" + (item.snooze_until ? " → " + item.snooze_until : ""), "snoozed");
-      if (item.status === "waiting") chips += chip("waiting", "waiting");
-      if (item.due) chips += chip("due " + item.due);
-      el.innerHTML = `<h4></h4><div class="note"></div><div class="chips">${chips}</div>
-        <div class="actions">
-          <button data-act="focus">Focus</button>
-          <button class="primary" data-act="ship">Mark shipped</button>
-          <button data-act="snooze">Snooze</button>
-          <button data-act="drop">Drop</button>
-        </div>`;
-      el.querySelector("h4").textContent = item.title;
-      el.querySelector(".note").textContent = item.note || "";
-      el.querySelector('[data-act="focus"]').onclick = () => openFocus(item.id);
-      el.querySelector('[data-act="ship"]').onclick = () => confirmShip(item.id);
-      el.querySelector('[data-act="snooze"]').onclick = () => snoozeDialog(item.id);
-      el.querySelector('[data-act="drop"]').onclick = () => dropItem(item.id);
+      el.className = "card shipped-card";
+      el.innerHTML = `<div class="cat-row"><span class="cat">${catOf(item)}</span></div>
+        <h4>✓ ${esc(item.title)}</h4>
+        ${item.shipped_note ? `<div class="done-note">Did: ${esc(item.shipped_note)}</div>` : ""}`;
       board.appendChild(el);
     });
-  });
-  if (!open.length) board.innerHTML = `<p class="empty">All clear. Nothing left unfinished. 🎉</p>`;
+  } else {
+    if (!list.length) board.innerHTML = `<p class="empty">All clear. Nothing left unfinished.</p>`;
+    list.forEach(item => {
+      const el = document.createElement("div");
+      el.className = "card " + item.priority;
+      el.innerHTML = `
+        <div class="cat-row"><span class="cat">${catOf(item)}</span>
+          <span class="pri-tag">${priTag(item.priority)}</span></div>
+        <h4>${esc(item.title)}</h4>
+        <div class="desc">${esc(item.note || "")}</div>
+        <div class="meta"><span>◷ ${esc(dueLabel(item) || "no due date")}</span>
+          <span class="src-pill">Chat</span><span>${esc(item.source_chat || "")}</span></div>
+        <div class="card-actions">
+          <button data-act="focus">→&nbsp; Focus</button>
+          <button data-act="ship">✓&nbsp; Ship</button>
+        </div>`;
+      el.querySelector('[data-act="focus"]').onclick = () => openFocus(item.id);
+      el.querySelector('[data-act="ship"]').onclick = () => confirmShip(item.id);
+      board.appendChild(el);
+    });
+  }
 
+  // shipped log
   const log = document.getElementById("shipped-log");
   log.innerHTML = "";
   if (!shipped.length) {
@@ -385,49 +534,17 @@ function render() {
   } else {
     shipped.forEach(item => {
       const el = document.createElement("div");
-      el.className = "card shipped";
-      el.innerHTML = `<h4></h4><div class="chips">${chip("shipped" + (item.shipped_at ? " · " + item.shipped_at : ""))}${chip(item.source_chat, "src")}</div>
-        ${item.shipped_note ? `<div class="done-note"></div>` : ""}`;
-      el.querySelector("h4").textContent = "✓ " + item.title;
-      if (item.shipped_note) el.querySelector(".done-note").textContent = "Did: " + item.shipped_note;
+      el.className = "card shipped-card";
+      el.innerHTML = `<div class="cat-row"><span class="cat">${catOf(item)}</span>
+          <span class="pri-tag">shipped${item.shipped_at ? " · " + esc(item.shipped_at) : ""}</span></div>
+        <h4>✓ ${esc(item.title)}</h4>
+        ${item.shipped_note ? `<div class="done-note">Did: ${esc(item.shipped_note)}</div>` : ""}`;
       log.appendChild(el);
     });
   }
-
-  const dlog = document.getElementById("dropped-log");
-  dlog.innerHTML = "";
-  if (!dropped.length) {
-    dlog.innerHTML = `<p class="empty">Nothing dropped. Dropping removes an item from the board without deleting it — it waits here until you resurface it or the scan finds something related.</p>`;
-  } else {
-    dropped.forEach(item => {
-      const el = document.createElement("div");
-      el.className = "card";
-      el.innerHTML = `<h4></h4><div class="note"></div><div class="chips">${chip("dropped", "dropped")}${chip(item.source_chat, "src")}</div>
-        <div class="actions"><button data-act="resurface">Resurface</button></div>`;
-      el.querySelector("h4").textContent = item.title;
-      el.querySelector(".note").textContent = item.note || "";
-      el.querySelector('[data-act="resurface"]').onclick = () => resurfaceItem(item.id);
-      dlog.appendChild(el);
-    });
-  }
 }
 
-function dropItem(id) {
-  const item = findItem(id);
-  if (!item) return;
-  item.status = "dropped";
-  item.dropped_at = new Date().toISOString().slice(0, 10);
-  closeDialog(); render();
-  toast("Dropped. It's in the Dropped list below if you want it back.");
-}
-function resurfaceItem(id) {
-  const item = findItem(id);
-  if (!item) return;
-  item.status = "open";
-  item.dropped_at = undefined;
-  render();
-  toast("Back on the board.");
-}
+/* ---------- modal helpers ---------- */
 
 const overlay = document.getElementById("overlay");
 const dialog = document.getElementById("dialog");
@@ -449,19 +566,28 @@ function openFocus(id) {
   const segBtns = ["urgent", "high", "normal", "low"].map(p =>
     `<button data-p="${p}" class="${item.priority === p ? "on-" + p : ""}">${PRIORITY_LABEL[p]}</button>`
   ).join("");
+  const statusOpts = STATUS_OPTIONS.map(s =>
+    `<option value="${s}"${item.status === s ? " selected" : ""}>${STATUS_LABEL[s]}</option>`).join("");
   openDialog(`
-    <div class="sub">FOCUS · full context, no re-reading the chat</div>
-    <h2>${esc(item.title)}</h2>
-    <div class="chips" style="margin:10px 0 0">${chip(PRIORITY_LABEL[item.priority])}${chip(item.source_chat, "src")}${item.due ? chip("due " + item.due) : ""}${item.status === "snoozed" && item.snooze_until ? chip("snoozed → " + item.snooze_until, "snoozed") : ""}${item.status === "waiting" ? chip("waiting", "waiting") : ""}</div>
-    ${item.why_urgent ? `<div class="frow" style="margin-top:14px"><label>Why this is urgent</label><div class="body">${esc(item.why_urgent)}</div></div>` : ""}
-    <div class="frow"><label>Context</label><div class="body">${esc(item.detail || item.note || "—")}</div></div>
-    <div class="frow"><label>Change urgency</label><div class="seg" id="seg">${segBtns}</div></div>
+    <div class="src-head">
+      <span class="chat-tag">Chat</span>
+      <h2>${esc(item.source_chat || "Source chat")}</h2>
+      <div class="hint">Search this exact name in Chats to continue there.</div>
+    </div>
+    ${item.why_urgent ? `<div class="why">${esc(item.why_urgent)}</div>` : ""}
+    ${item.priority_note ? `<div class="override">${esc(item.priority_note)}</div>` : ""}
+    <div class="frow"><label>Task</label><input type="text" id="f-title" value="${esc(item.title)}"></div>
+    <div class="frow"><label>Project</label><input type="text" id="f-proj" value="${esc(item.project || "General")}"></div>
+    <div class="frow"><label>Context</label><textarea id="f-detail">${esc(item.detail || item.note || "")}</textarea></div>
+    <div class="frow-2">
+      <div class="frow"><label>Priority</label><div class="seg" id="seg">${segBtns}</div></div>
+      <div class="frow"><label>Status</label><select id="f-status">${statusOpts}</select></div>
+    </div>
     <div class="frow"><label>Deadline</label><input type="date" id="f-due" value="${esc(item.due || "")}"></div>
     <div class="frow"><label>Snooze until</label><input type="date" id="f-snooze" value="${esc(item.snooze_until || "")}"></div>
     <div class="actions">
-      <button id="f-save">Save changes</button>
-      <button id="f-drop">Drop item</button>
-      <button class="primary" id="f-ship">Mark shipped</button>
+      <button class="btn" id="f-save">Save changes</button>
+      <button class="btn primary" id="f-ship">Mark shipped</button>
     </div>`);
   dialog.querySelectorAll("#seg button").forEach(b => {
     b.onclick = () => {
@@ -470,9 +596,18 @@ function openFocus(id) {
     };
   });
   document.getElementById("f-save").onclick = () => {
-    const sel = dialog.querySelector("#seg button[class^='on-'], #seg button[class*=' on-']");
-    if (sel) item.priority = sel.dataset.p;
+    const sel = dialog.querySelector("#seg button[class*='on-']");
+    if (sel && sel.dataset.p !== item.priority) {
+      item.priority = sel.dataset.p;
+      item.priority_note = `Your priority overrides the scan's ${PRIORITY_LABEL[sel.dataset.p].toLowerCase()} suggestion.`;
+    }
+    item.title = document.getElementById("f-title").value.trim() || item.title;
+    item.detail = document.getElementById("f-detail").value.trim();
+    item.note = item.detail.split(".")[0] + ".";
     item.due = document.getElementById("f-due").value || undefined;
+    const st = document.getElementById("f-status").value;
+    if (st === "dropped") { dropItem(id); return; }
+    item.status = st === "in-focus" ? "open" : st;
     const sn = document.getElementById("f-snooze").value;
     if (sn) { item.status = "snoozed"; item.snooze_until = sn; }
     else if (item.status === "snoozed") { item.status = "open"; item.snooze_until = undefined; }
@@ -480,8 +615,44 @@ function openFocus(id) {
     toast("Saved. The board re-sorts around your call.");
   };
   document.getElementById("f-ship").onclick = () => confirmShip(id);
-  document.getElementById("f-drop").onclick = () => dropItem(id);
 }
+
+function dropItem(id) {
+  const item = findItem(id);
+  if (!item) return;
+  item.status = "dropped";
+  item.dropped_at = new Date().toISOString().slice(0, 10);
+  closeDialog(); render();
+  toast("Dropped. It's in the Dropped list if you want it back.");
+}
+function resurfaceItem(id) {
+  const item = findItem(id);
+  if (!item) return;
+  item.status = "open";
+  item.dropped_at = undefined;
+  closeDialog(); render();
+  toast("Back on the board.");
+}
+
+/* ---------- dropped list ---------- */
+
+document.getElementById("dropped-pill").onclick = () => {
+  const dropped = droppedItems();
+  openDialog(`
+    <div class="src-head"><h2>Dropped</h2>
+    <div class="hint">Out of sight, not gone. Resurface anything you want back on the board.</div></div>
+    ${dropped.length ? "" : `<p class="empty">Nothing dropped.</p>`}`);
+  dropped.forEach(item => {
+    const row = document.createElement("div");
+    row.className = "card";
+    row.style.marginTop = "12px";
+    row.innerHTML = `<div class="cat-row"><span class="cat">${catOf(item)}</span></div>
+      <h4>${esc(item.title)}</h4><div class="desc">${esc(item.note || "")}</div>
+      <div class="actions"><button class="btn" data-act="res">Resurface</button></div>`;
+    row.querySelector("[data-act='res']").onclick = () => resurfaceItem(item.id);
+    dialog.appendChild(row);
+  });
+};
 
 /* ---------- ship with confirmation ---------- */
 
@@ -489,17 +660,17 @@ function confirmShip(id) {
   const item = findItem(id);
   if (!item) return;
   openDialog(`
-    <div class="sub">CONFIRM</div>
-    <h2>${esc(item.title)}</h2>
+    <div class="src-head"><h2>${esc(item.title)}</h2>
+    <div class="hint">Confirm it's really done.</div></div>
     <div class="creed"><strong>Produced is not shipped.</strong> Shipped means you actually did
     something with this — not just made output. The scan will never mark this for you.</div>
     <label class="check-row"><input type="checkbox" id="s-did">
     <span>I actually did something with this (not just thought about it).</span></label>
-    <div class="frow"><label>What did you do? <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+    <div class="frow"><label>What did you do? (optional)</label>
     <input type="text" id="s-note" placeholder="e.g. called the clinic, booked for Thursday"></div>
     <div class="actions">
-      <button id="s-cancel">Not yet</button>
-      <button class="primary" id="s-ok">Confirm shipped</button>
+      <button class="btn" id="s-cancel">Not yet</button>
+      <button class="btn primary" id="s-ok">Confirm shipped</button>
     </div>`);
   document.getElementById("s-cancel").onclick = closeDialog;
   document.getElementById("s-ok").onclick = () => {
@@ -511,54 +682,27 @@ function confirmShip(id) {
     item.shipped_at = new Date().toISOString().slice(0, 10);
     item.shipped_note = document.getElementById("s-note").value.trim() || undefined;
     closeDialog(); render();
-    toast("Shipped. It's in the log below — proof, not a vanishing act.");
-  };
-}
-
-/* ---------- snooze ---------- */
-
-function snoozeDialog(id) {
-  const item = findItem(id);
-  if (!item) return;
-  const tomorrow = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
-  openDialog(`
-    <div class="sub">SNOOZE</div>
-    <h2>${esc(item.title)}</h2>
-    <div class="creed">Snoozing parks it with a <strong>comeback date</strong> — "later" with a return
-    ticket, not "later" into the void. The scan won't surface it before then.</div>
-    <div class="frow"><label>Come back on</label><input type="date" id="z-date" value="${tomorrow}"></div>
-    <div class="actions">
-      <button id="z-cancel">Cancel</button>
-      <button class="primary" id="z-ok">Snooze it</button>
-    </div>`);
-  document.getElementById("z-cancel").onclick = closeDialog;
-  document.getElementById("z-ok").onclick = () => {
-    const d = document.getElementById("z-date").value || tomorrow;
-    item.status = "snoozed";
-    item.snooze_until = d;
-    closeDialog(); render();
-    toast(`Parked until ${d}. It'll resurface on its own.`);
+    toast("Shipped. It's in the log — proof, not a vanishing act.");
   };
 }
 
 /* ---------- manual capture ---------- */
 
-document.getElementById("add-btn").onclick = () => {
+function openAdd() {
   openDialog(`
-    <div class="sub">CAPTURE</div>
-    <h2>Add an item</h2>
-    <div class="creed">Caught it yourself before the scan did. Same rules: <strong>verb-first title</strong>,
-    honest urgency.</div>
+    <div class="src-head"><h2>Add an item</h2>
+    <div class="hint">Caught it yourself before the scan did.</div></div>
+    <div class="creed">Same rules: <strong>verb-first title</strong>, honest urgency.</div>
     <div class="frow"><label>Next action</label><input type="text" id="a-title" placeholder="e.g. Text Maya the invoice total"></div>
     <div class="frow"><label>Context</label><textarea id="a-note" placeholder="What's blocking, what's next"></textarea></div>
     <div class="frow"><label>Urgency</label><div class="seg" id="a-seg">
       <button data-p="urgent">Urgent</button><button data-p="high">High</button>
       <button data-p="normal" class="on-normal">Normal</button><button data-p="low">Low</button>
     </div></div>
-    <div class="frow"><label>Deadline <span style="text-transform:none;letter-spacing:0">(optional)</span></label><input type="date" id="a-due"></div>
+    <div class="frow"><label>Deadline (optional)</label><input type="date" id="a-due"></div>
     <div class="actions">
-      <button id="a-cancel">Cancel</button>
-      <button class="primary" id="a-ok">Add to board</button>
+      <button class="btn" id="a-cancel">Cancel</button>
+      <button class="btn primary" id="a-ok">Add to board</button>
     </div>`);
   dialog.querySelectorAll("#a-seg button").forEach(b => {
     b.onclick = () => {
@@ -586,18 +730,20 @@ document.getElementById("add-btn").onclick = () => {
     closeDialog(); render();
     toast("Captured. The next scan would have found it anyway — now it doesn't have to.");
   };
-};
+}
+document.getElementById("add-btn").onclick = openAdd;
+document.getElementById("add-link").onclick = openAdd;
 
 /* ---------- simulated scan ---------- */
 
 document.getElementById("scan-btn").onclick = () => {
   const btn = document.getElementById("scan-btn");
   btn.disabled = true;
-  btn.textContent = "Scanning…";
+  btn.innerHTML = "Scanning…";
   setTimeout(() => {
     lastScan = new Date();
     btn.disabled = false;
-    btn.textContent = "Scan now";
+    btn.innerHTML = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg> Refresh`;
     render();
     toast("Demo scan complete — nothing new. In the live system this re-reads your Muse chats.");
   }, 1200);
