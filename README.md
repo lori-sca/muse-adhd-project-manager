@@ -40,6 +40,28 @@ Every choice maps to how my brain actually fails:
 - **Sorted by urgency, not by project** — attention doesn't care which project something belongs to. The board follows attention, not taxonomy.
 
 
+## The case
+
+The scan doesn't look for tasks. It looks for *midway*: the message drafted but never
+sent, three chats deep. The follow-up promised with no date attached. The thread that
+went quiet while it was waiting on me — not on them.
+
+What used to happen: I'd lose the morning reconstructing what "that thing" was —
+re-reading three chats to recover the context. Now every card carries it: which chat it
+came from, what was blocking, what the next physical action is. Working memory is the
+bottleneck; the board holds it so my brain doesn't have to.
+
+## The result
+
+In daily use since September 2026. Every morning the scan reads my chats and the board
+re-sorts around what's actually urgent. 70+ items confirmed shipped — and *confirmed*
+is doing the heavy lifting: shipped doesn't mean checked off, it means I did something
+with it and said so. The shipped log is the receipt.
+
+Dropped items stay dropped until I say otherwise. Nothing I finished vanishes;
+nothing I abandoned nags me. That's the whole system: notice everything, nag about
+nothing, and keep the proof.
+
 ## Try the demo
 
 Live demo (fictional sample data, no setup needed): https://lori-sca.github.io/muse-adhd-project-manager/board/index.html
