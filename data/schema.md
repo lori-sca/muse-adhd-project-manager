@@ -9,7 +9,8 @@ Every item the scanner produces — and everything `board/index.html` renders �
 | `id` | string | yes | Stable unique id, e.g. `loop-2026-09-28-001`. The scanner must reuse the same id for the same open loop across scans so items don't duplicate. |
 | `title` | string | yes | Short, actionable title. Verb-first: "Reply to…", "Finish…", "Book…". |
 | `priority` | string | yes | One of `urgent`, `high`, `normal`, `low`. See `prompts/prioritization.md`. |
-| `status` | string | yes | One of `open`, `waiting` (blocked on someone/something else), `snoozed` (deliberately deferred), `shipped` (done — confirmed by the user). The board moves `shipped` items to the shipped log instead of hiding them. |
+| `status` | string | yes | One of `open`, `waiting` (blocked on someone/something else), `snoozed` (deliberately deferred), `dropped` (removed from the board by the user — not deleted, waits in the Dropped list until resurfaced), `shipped` (done — confirmed by the user). The board moves `shipped` items to the shipped log and `dropped` items to the dropped list instead of hiding them. |
+| `dropped_at` | string | no | `YYYY-MM-DD` date the item was dropped. The scan must never resurrect a dropped item on its own — a drop stays a drop until the user says otherwise. |
 | `source_chat` | string | yes | Human-readable name of the conversation the item came from, e.g. `"Job search"`. Shown on the card so the user can jump back to context. |
 | `source_fingerprint` | string | yes | Machine key for dedup, e.g. the chat's id + a topic hash. Same loop seen in a later scan must produce the same fingerprint. |
 | `note` | string | no | One or two sentences of context: what's blocking, what's next, why it matters. |
