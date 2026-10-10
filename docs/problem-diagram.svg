@@ -23,7 +23,7 @@
   <!-- PANEL 2: THE ENGINE -->
   <rect x="48" y="384" width="1104" height="300" rx="24" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
   <text x="96" y="448" font-size="22" font-weight="700" letter-spacing="4" fill="#4f46e5">THE ENGINE</text>
-  <text x="96" y="486" font-size="22" fill="#57534e">A backend made of rules and loops — no code required.</text>
+  <text x="96" y="486" font-size="22" fill="#57534e">A backend made of rules and loops. No code required.</text>
 
   <!-- node 1 -->
   <rect x="96" y="520" width="240" height="120" rx="16" fill="#ffffff" stroke="#c7d2fe" stroke-width="2"/>
@@ -46,8 +46,8 @@
   <!-- node 4 -->
   <rect x="912" y="520" width="240" height="120" rx="16" fill="#ffffff" stroke="#c7d2fe" stroke-width="2"/>
   <text x="936" y="558" font-size="20" font-weight="800" letter-spacing="2" fill="#4338ca">GATE</text>
-  <text x="936" y="590" font-size="18" fill="#57534e">Produced isn&#8217;t shipped —</text>
-  <text x="936" y="614" font-size="18" fill="#57534e">only you confirm.</text>
+  <text x="936" y="590" font-size="18" fill="#57534e">Produced isn&#8217;t shipped.</text>
+  <text x="936" y="614" font-size="18" fill="#57534e">Only you confirm.</text>
 
   <!-- node connectors -->
   <line x1="342" y1="580" x2="362" y2="580" stroke="#818cf8" stroke-width="3" marker-end="url(#arrowIndigo)"/>

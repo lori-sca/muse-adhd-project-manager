@@ -5,9 +5,9 @@
  **Built for Muse.** A scheduled scan reads your Muse threads, catches everything you left midway, and puts it on one prioritized board that nudges you until it's actually shipped.
 
 
-![The reframe, the engine, the surface](docs/problem-diagram.svg)
+![The reframe, the engine, the surface](docs/problem-diagram.svg?v=2)
 
-![Board](docs/screenshots/board.png?v=3)
+![Board](docs/screenshots/board.png?v=4)
 
 ![Focus view](docs/screenshots/focus.png)
 
